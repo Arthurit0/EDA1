@@ -6,9 +6,13 @@ struct fnc{
     float salario;
 };
 
-void maior(int op, struct fnc vetor[6]);
+void maior(struct fnc vetor[6]);
+void menor (struct fnc vetor[6]);
+void imprimir(struct fnc vetor[6]);
+void media(struct fnc vetor[6]);
+void imprimirDados(struct fnc vetor[6]);
 
-void menor (int op, struct fnc vetor[6]);
+
 
 int main(){
    struct fnc funcionarios[6];
@@ -31,18 +35,57 @@ int main(){
     printf("3 - Imprimir todos os funcionarios (e suas posicoes)\n");
     printf("4 - Media dos salarios dos funcionarios\n");
     printf("5 - Imprimir os dados de todos os funcionarios\n");
+    printf("0 - Sair do programa\n");
 
     scanf("%d",&op);
+    switch (op)
+    {
+    case 1:
+        maior(funcionarios);
+        break;
     
+    case 2:
+        menor(funcionarios);
+        break;
+
+    case 3:
+        imprimir(funcionarios);
+        break;
+
+    case 4:
+        media(funcionarios);
+        break;
+
+    case 5:
+        imprimirDados(funcionarios);
+        break;
+
+    default:
+        printf("Opcao nao encontrada, tente novamente\n");
+        break;
+    }
+
     }while(op != 0);
 
     return 0;
 }
 
-void maior(int op, struct fnc vetor[6]){
+void maior(struct fnc vetor[6]){
+    int maior = vetor[0].salario;
+}
+
+void menor (struct fnc vetor[6]){
 
 }
 
-void menor (int op, struct fnc vetor[6]){
+void imprimir(struct fnc vetor[6]){
+
+}
+
+void media(struct fnc vetor[6]){
+
+}
+
+void imprimirDados(struct fnc vetor[6]){
 
 }
