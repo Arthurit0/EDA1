@@ -10,7 +10,7 @@ int main(){
     struct hm minParaHoras;
 
     printf("Digite o tempo em minutos\n");
-    scanf("%d",%minutos);
+    scanf("%d",&minutos);
 
     minParaHoras.horas = m/60;
     minParaHoras.minutos = m%60;
