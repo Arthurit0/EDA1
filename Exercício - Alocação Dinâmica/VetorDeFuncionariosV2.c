@@ -2,13 +2,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <locale.h>
 
 struct fnc{
     int codigo;
-    char nome[20];
+    char nome[80];
     float salario;
 };
 
+void mostraMenu();
 struct fnc registraFunc (int i);
 void imprimirFunc (struct fnc *vet, int tam);
 void encontraFunc (struct fnc *vet, int op2, int tam);
@@ -19,30 +21,16 @@ struct fnc * incluirFunc (struct fnc *vet, int tam);
 struct fnc * removeFunc (struct fnc * vet, int tam);
 
 int main(){
+   setlocale(LC_ALL, "");
+
    struct fnc *vet=NULL;
     int i, op;
 
     do{
-    printf("\n\n================================================\n");
-    printf("|      CADASTRO DE FUNCIONARIOS      |\n");
-    printf("|____________________________________|\n");
-    printf("|           MENU DE OPCOES           |\n");
-    printf("|------------------------------------|\n");
-    printf("| 1 - INSERIR n VALORES NO VETOR     |\n");
-    printf("| 2 - IMPRIMIR TODOS OS FUNCIONARIOS |\n");
-    printf("| 3 - IMPRIMIR FUNCIONARIO DA POSICAO|\n");
-    printf("| 4 - RETORNAR POS. DO MAIOR SALARIO |\n");
-    printf("| 5 - RETORNAR POS. DO MENOR SALARIO |\n");
-    printf("| 6 - RETORNAR A MEDIA DOS SALARIOS  |\n");
-    printf("| 7 - INCLUIR FUNCIONARIO            |\n");
-    printf("| 8 - REMOVER UM FUNCIONARIO         |\n");
-    printf("| 0 - SAIR                           |\n");
-    printf("|------------------------------------|\n");
-    printf("\n");
-    printf("Selecione uma opcao: ");
+    mostraMenu();
 
     int op2, tam, tempCod;
-    char tempString[20];
+    char tempString[80];
     float tempFloat;
     int novotam;
 
@@ -67,7 +55,7 @@ int main(){
             vet[i] = registraFunc(i);
     }
 
-        printf("\nFuncionarios cadastrados com sucesso!\n");
+        printf("\nFuncionários cadastrados com sucesso!\n");
         break;
     
     case 2:
@@ -77,7 +65,7 @@ int main(){
 
     case 3:
         system("cls");
-        printf("Deseja encontrar o funcionario de qual posicao? (0 ate %d)\n", (tam-1));
+        printf("Deseja encontrar o funcionário de qual posição? (0 até %d)\n", (tam-1));
         scanf("%d", &op2);
         encontraFunc(vet, op2, tam);
         break;
@@ -113,7 +101,7 @@ int main(){
         return 0;
 
     default:
-        printf("\nOpcao nao encontrada, tente novamente!\n");
+        printf("\nOpção não encontrada, tente novamente!\n");
         break;
     }
 
@@ -126,20 +114,40 @@ int main(){
     return 0;
 }
 
+void mostraMenu(){
+printf("\n\n================================================\n");
+    printf("|      CADASTRO DE FUNCIONÁRIOS      |\n");
+    printf("|____________________________________|\n");
+    printf("|           MENU DE OPÇÕES           |\n");
+    printf("|------------------------------------|\n");
+    printf("| 1 - INSERIR n VALORES NO VETOR     |\n");
+    printf("| 2 - IMPRIMIR TODOS OS FUNCIONÁRIOS |\n");
+    printf("| 3 - IMPRIMIR FUNCIONÁRIO DA POSIÇÃO|\n");
+    printf("| 4 - RETORNAR POS. DO MAIOR SALÁRIO |\n");
+    printf("| 5 - RETORNAR POS. DO MENOR SALÁRIO |\n");
+    printf("| 6 - RETORNAR A MÉDIA DOS SALÁRIOS  |\n");
+    printf("| 7 - INCLUIR FUNCIONÁRIO            |\n");
+    printf("| 8 - REMOVER UM FUNCIONÁRIO         |\n");
+    printf("| 0 - SAIR                           |\n");
+    printf("|------------------------------------|\n");
+    printf("\n");
+    printf("Selecione uma opção: ");
+}
+
 struct fnc registraFunc (int i){
     struct fnc vet;
 
     int tempCod;
-    char tempString[20];
+    char tempString[80];
     float tempFloat;
 
-    printf("Digite o codigo do funcionario da pos[%d]:\n", i);
+    printf("Digite o código do funcionário da pos[%d]:\n", i);
     scanf("%d", &tempCod);
     vet.codigo = tempCod;
-    printf("Digite o nome do funcionario da pos[%d]:\n",i);
+    printf("Digite o nome do funcionário da pos[%d]:\n",i);
     scanf("%s", &tempString);
-    strncpy(vet.nome, tempString, 20);
-    printf("Digite o salario do(a) %s:\n", vet.nome);
+    strncpy(vet.nome, tempString, 80);
+    printf("Digite o salário do(a) %s:\n", vet.nome);
     scanf("%f", &tempFloat);
     vet.salario = tempFloat;  
 
@@ -151,7 +159,7 @@ void imprimirFunc (struct fnc *vet, int tam){
     
     for (i=0; i<tam; i++){
         printf("------------------------------------|");
-        printf("\n Codigo: %d\n Nome: %s\n Salario: R$ %.2f\n", vet[i].codigo, vet[i].nome, vet[i].salario);
+        printf("\n Código: %d\n Nome: %s\n Salário: R$ %.2f\n", vet[i].codigo, vet[i].nome, vet[i].salario);
     }
     printf("------------------------------------|");
 }
@@ -161,13 +169,13 @@ void encontraFunc (struct fnc *vet, int op2, int tam){
     bool encontrado = false;
     for (i=0; i<tam; i++){
         if (i==op2){
-            printf("\nCodigo: %d\nNome: %s\nSalario: R$ %.2f\n", vet[i].codigo, vet[i].nome, vet[i].salario);
+            printf("\nCódigo: %d\nNome: %s\nSalário: R$ %.2f\n", vet[i].codigo, vet[i].nome, vet[i].salario);
             encontrado = true;
         }
     }
 
     if (encontrado == false){
-        printf("\nPosicao invalida, tente novamente!\n");
+        printf("\nPosição inválida, tente novamente!\n");
     }
 }
 void maior(struct fnc *vet, int tam){
@@ -180,7 +188,7 @@ void maior(struct fnc *vet, int tam){
         }
     }
 
-    printf("\nO funcionario que possui maior salario de R$ %.2f eh o da posicao [%d]: %s\n", vet[posmaior].salario, posmaior, vet[posmaior].nome);
+    printf("\nO funcionário que possui maior salário de R$ %.2f é o da posição [%d]: %s\n", vet[posmaior].salario, posmaior, vet[posmaior].nome);
 }
 
 void menor(struct fnc *vet, int tam){
@@ -193,7 +201,7 @@ void menor(struct fnc *vet, int tam){
         }
     }
 
-    printf("\nO funcionario que possui menor salario de R$ %.2f eh o da posicao [%d]: %s\n", vet[posmenor].salario, posmenor, vet[posmenor].nome);
+    printf("\nO funcionário que possui menor salário de R$ %.2f é o da posição [%d]: %s\n", vet[posmenor].salario, posmenor, vet[posmenor].nome);
 }
 
 void media(struct fnc *vet, int tam){
@@ -206,7 +214,7 @@ void media(struct fnc *vet, int tam){
 
     media = (salarioTotal/tam);
 
-    printf ("\nA media dos salarios de todos os funcionarios eh R$ %.2f\n", media);
+    printf ("\nA média dos salários de todos os funcionários é R$ %.2f\n", media);
 }
 
 struct fnc * incluirFunc (struct fnc *vet, int novotam){
@@ -222,10 +230,10 @@ struct fnc * incluirFunc (struct fnc *vet, int novotam){
     }
 
     vet[novotam-1].codigo = novoFunc.codigo;
-    strncpy(vet[novotam-1].nome, novoFunc.nome, 20);
+    strncpy(vet[novotam-1].nome, novoFunc.nome, 80);
     vet[novotam-1].salario = novoFunc.salario;
 
-    printf("\nNovo funcionario cadastrado com sucesso!\n");
+    printf("\nNovo funcionário cadastrado com sucesso!\n");
 
     return vet;
 }
@@ -234,13 +242,13 @@ struct fnc * removeFunc (struct fnc * vet, int tam){
     int i, op;
     struct fnc *temp;
 
-    printf("Deseja remover o funcionario de qual posicao? (0 ate %d)\n", (tam-1));
+    printf("Deseja remover o funcionário de qual posição? (0 até %d)\n", (tam-1));
     scanf("%d",&op);
 
     if((op>0)&&(op<(tam))){
     for(i=op; i<tam; i++){
         vet[i].codigo = vet[i+1].codigo;
-        strncpy(vet[i].nome, vet[i+1].nome, 20);
+        strncpy(vet[i].nome, vet[i+1].nome, 80);
         vet[i].salario = vet[i+1].salario;
     }
 
@@ -250,12 +258,12 @@ struct fnc * removeFunc (struct fnc * vet, int tam){
         return vet;
     }else{
         vet = temp;
-        printf("\nFuncionario da posicao %d removido!\n", op);
+        printf("\nFuncionário da posição %d removido!\n", op);
     }
 
     return vet;
     }else{
-        printf("\nPosicao invalida, tente novamente!\n");
+        printf("\nPosição inválida, tente novamente!\n");
         return vet;
     }
 }
