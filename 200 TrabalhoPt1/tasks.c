@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+//#include <locale.h>
 #include "tasks.h"
 
 void mostra_Menu(){
+    //setlocale(LC_ALL, "pt-BR");
     system("cls");
     printf("|------------------------------------|\n");
     printf("|         CADASTRO DE TAREFAS        |\n");
@@ -36,20 +38,8 @@ tmp * cria_Tempo(int d, int m, int a, int h, int min){
     return novo;
 }
 
-//Cria um ponteiro para a estrutura "Duracao" e o aloca, atribui os dados e devolve o ponteiro.
-dur * cria_Duracao(int hrs, int mins){
-    dur *novo;
-
-    novo = (dur *)malloc(sizeof(dur));
-
-    novo->horas = hrs + mins/60;
-    novo->minutos = mins%60;
-
-    return novo;
-}
-
 //Cria um ponteiro para a estrutura "DadosTask" e o aloca, atribui os ponteiros de "Tempo" e "Duracao"
-reg * cria_Dados(char nm[], int prior, tmp* temp, dur *durac){
+reg * cria_Dados(char nm[], int prior, tmp* temp, tmp *durac){
     reg *novo;
 
     novo = (reg *)malloc(sizeof(reg));
@@ -63,11 +53,11 @@ reg * cria_Dados(char nm[], int prior, tmp* temp, dur *durac){
 }
 
 //Cria e aloca uma nova tarefa, atribuindo os "DadosTask" como parâmetro, e a insere no final da lista de Tarefas
-task * adiciona_Tarefa(task *l, reg *dads){
+task * adiciona_Tarefa(task *l, reg *dads, int ident){
     task *novo, *p;
 
     novo = (task *)malloc(sizeof(task)); //Aloca a nova tarefa e atribui os dados do parâmetro da função
-    novo->ID = cria_Id_Novo(l);
+    novo->ID = ident;
     novo->dados = dads;
     novo->prox = NULL;
 
@@ -84,36 +74,9 @@ task * adiciona_Tarefa(task *l, reg *dads){
     return l;
 }
 
-//Cria um ID para uma tarefa, e quando o ID é criado, verifica se não existe um ID igual a este na lista
-int cria_Id_Novo(task* l){
-    task *p;
-    time_t t; srand((unsigned) time(&t)); //Dando seed para o rand()
-    int cont, ID;
-
-    if(l == NULL) return 1000+(rand()%8999); //Farei tasks com IDs entre 1000 e 9999
-
-    p = l;
-
-    do{
-        cont = 0;
-        ID = 1000+(rand()% 9999); //Crio um ID
-
-        while(p != NULL){ //Dentro deste while, verifico em toda a lista se há um ID igual a este...
-            if(ID == p->ID){
-                cont++;
-                break;
-            }
-            p = p->prox;
-        }
-
-    }while(cont != 0); //... se houver um ID igual, o contador será maior que 1 e a recursão recomeça, criando um novo ID, até que um inédito seja criado
-
-    return ID;
-}
-
 //Função para imprimir todas as tarefas
 void mostra_Tarefas(task* l){
-    task *p; tmp *ddline; dur *durac;
+    task *p; tmp *ddline; tmp *durac;
 
     if(l != NULL){
         p = l;
@@ -125,13 +88,27 @@ void mostra_Tarefas(task* l){
             printf("Tarefa de ID %d:\n", p->ID);
             printf("-> Tarefa: %s\n", p->dados->nome);
             printf("-> Prioridade: %d\n", p->dados->prioridade);
-            printf("-> Duracao: %d hora(s) e %d minuto(s)\n", durac->horas, durac->minutos);
+            printf("-> Duracao: %d hora(s) e %d minuto(s), %d dias, %d meses e %d anos\n", durac->hora, durac->minuto, durac->dia, durac->mes, durac->ano);
             printf("-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
             printf("\n==================================\n");
             p = p->prox;
         }
         printf("\n");
     }
+}
+
+void imprime_Unica_Tarefa(task * t){
+    tmp *ddline; tmp *durac;
+
+    ddline = t->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão
+    durac = t->dados->duracao;
+    printf("\n=================================\n");
+    printf("Tarefa de ID %d:\n", t->ID);
+    printf("-> Tarefa: %s\n", t->dados->nome);
+    printf("-> Prioridade: %d\n", t->dados->prioridade);
+    printf("-> Duracao: %d hora(s) e %d minuto(s), %d dias, %d meses e %d anos\n", durac->hora, durac->minuto, durac->dia, durac->mes, durac->ano);
+    printf("-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
+    printf("\n==================================\n");
 }
 
 //Exclui a tarefa que possui o ID passado como parâmetro
@@ -185,5 +162,37 @@ task * busca_Tarefa(task *l, int ident){
     }else{ //Se p não é NULL, a tarefa com este ID foi encontrada, então retorna esta tarefa
         return p;
     }
+}
 
+task * edita_Dados(task * t, char editaNome[80], int prior){
+    strcpy((t->dados->nome), editaNome);
+    t->dados->prioridade = prior;
+
+    return t;
+}
+
+task * edita_Deadline(task *t, int d, int m, int a, int h, int min){
+    tmp * edit_temp;
+    edit_temp = t->dados->deadline;
+
+    edit_temp->dia = d;
+    edit_temp->mes = m;
+    edit_temp->ano = a;
+    edit_temp->hora = h;
+    edit_temp->minuto = min;
+
+    return t;
+}
+
+task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
+    tmp * edit_temp;
+    edit_temp = t->dados->duracao;
+
+    edit_temp->dia = d;
+    edit_temp->mes = m;
+    edit_temp->ano = a;
+    edit_temp->hora = h;
+    edit_temp->minuto = min;
+
+    return t;
 }

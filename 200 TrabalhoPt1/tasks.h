@@ -1,10 +1,3 @@
-
-
-struct Duracao{
-    int horas;
-    int minutos;
-};
-
 struct Tempo{
     int dia;
     int mes;
@@ -13,12 +6,11 @@ struct Tempo{
     int minuto;
 };
 
-typedef struct Duracao dur;
 typedef struct Tempo tmp;
 
 struct DadosTask{
     char nome[80];
-    dur *duracao;
+    tmp *duracao;
     tmp *deadline;
     int prioridade;
 };
@@ -34,13 +26,18 @@ struct Tarefa{
 
 void mostra_Menu();
 void mostra_Tarefas(task* l);
+void imprime_Unica_Tarefa(task * t);
 
 tmp * cria_Tempo(int d, int m, int a, int h, int min);
-dur * cria_Duracao(int hrs, int mins);
-reg * cria_Dados(char nm[], int prior, tmp* temp, dur *durac);
-task * adiciona_Tarefa(task *l, reg *dads);
-int cria_Id_Novo(task *l);
+reg * cria_Dados(char nm[], int prior, tmp* temp, tmp *durac);
+
+task * adiciona_Tarefa(task *l, reg *dads, int ident);
 
 task * excluir_Tarefa(task *l, int ident);
 task * busca_Tarefa(task *l, int ident);
+
+task * edita_Dados(task * t, char editaNome[80], int prior);
+task * edita_Deadline(task *t, int d, int m, int a, int h, int min);
+task * edita_Duracao(task *t, int d, int m, int a, int h, int min);
+
 
