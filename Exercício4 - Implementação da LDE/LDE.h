@@ -8,7 +8,6 @@ struct node{
 };
 
 
-
 no * cria_no();
 no * insere_inicio(no *l);
 no * insere_ordenado(no *l);
