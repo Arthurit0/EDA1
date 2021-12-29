@@ -44,7 +44,7 @@ no * mergeSort(no *l){
 }
 
 no * split(no *l){
-    no *x, *y, *p, *metade1, *metade2;
+    no *x, *y, *p;
 
     x=y=l;
 
