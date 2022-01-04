@@ -16,7 +16,7 @@ void mostra_Menu(){
     printf("| 2 - VISUALIZAR TAREFAS CADASTRADAS |\n");
     printf("| 3 - EXCLUIR TAREFA                 |\n");
     printf("| 4 - EDITAR TAREFA                  |\n");
-    //printf("| 5 - INDICAR A TAREFA DO MOMENTO    |\n");
+    printf("| 5 - INDICAR A TAREFA DO MOMENTO    |\n");
     printf("| 0 - SAIR                           |\n");
     printf("|------------------------------------|\n");
     printf("\n");
