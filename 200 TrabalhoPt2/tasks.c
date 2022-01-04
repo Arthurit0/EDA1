@@ -220,3 +220,7 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
 
     return t;
 }
+
+tmp * tempo_concluido (tmp *deadline, *tmp duracao){
+    tmp 
+}
