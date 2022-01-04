@@ -4,6 +4,9 @@
 //#include <locale.h>
 #include "tasks.h"
 
+// Formato de documentação
+// http://www.linhadecodigo.com.br/artigo/1089/phpdoc-documentando-bem-seu-codigo.aspx
+
 void mostra_Menu(){
     //setlocale(LC_ALL, "pt-BR");
     system("cls");
@@ -23,7 +26,14 @@ void mostra_Menu(){
     printf("Selecione uma opcao: ");
 }
 
-//Cria um ponteiro para a estrutura "Tempo" e o aloca, atribui os dados e devolve o ponteiro.
+/*
+    @Param: Valores inteiros referentes a dia, mês, ano, hora e minuto, respectivamente
+    
+    @Return: Um ponteiro para a estrutura "Tempo".
+
+    Cria um ponteiro para a estrutura "Tempo" e o aloca, 
+    atribui os valores de dia e horário, e devolve o ponteiro "Tempo".
+*/
 tmp * cria_Tempo(int d, int m, int a, int h, int min){ 
     tmp *novo;
 
@@ -38,7 +48,15 @@ tmp * cria_Tempo(int d, int m, int a, int h, int min){
     return novo;
 }
 
-//Cria um ponteiro para a estrutura "DadosTask" e o aloca, atribui os ponteiros de "Tempo" e "Duracao"
+/*
+    @Param: Um array de char com o nome da Task, um inteiro de valor de prioridade, e dois ponteiros
+            de "Tempo" relacionados à data limite e a duração da task, respectivamente.
+
+    @Return: Um ponteiro para a estrutura "DadosTask"
+
+    Cria um ponteiro para a estrutura "DadosTask" e o aloca, atribui a ele os parâmetros de nome,
+    prioridade, deadline e duração, e retorna este ponteiro.
+*/
 reg * cria_Dados(char nm[], int prior, tmp* temp, tmp *durac){
     reg *novo;
 
@@ -51,8 +69,14 @@ reg * cria_Dados(char nm[], int prior, tmp* temp, tmp *durac){
 
     return novo;
 }
+/*
+    @Param: Um ponteiro para o início de uma lista de "task", um ponteiro para "reg" com os dados
+            da task, e um inteiro que será usado como o ID da task.
 
-//Cria e aloca uma nova tarefa, atribuindo os "DadosTask" como parâmetro, e a insere no final da lista de Tarefas
+    @Return: A mesma lista de "task" passada como parâmetro, mas com a nova task encadeada como último elemento
+
+    Cria e aloca uma nova tarefa, atribuindo os "DadosTask" como parâmetro, e a insere no final da lista de Tarefas
+*/
 task * adiciona_Tarefa(task *l, reg *dads, int ident){
     task *novo, *p;
 
@@ -74,44 +98,13 @@ task * adiciona_Tarefa(task *l, reg *dads, int ident){
     return l;
 }
 
-//Função para imprimir todas as tarefas
-void mostra_Tarefas(task* l){
-    task *p; tmp *ddline; tmp *durac;
+/*
+    @Param: Um ponteiro para o início de uma lista de "task", e um inteiro que é o ID de uma "task"
 
-    if(l != NULL){
-        p = l;
-        
-        while(p != NULL){
-            ddline = p->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão
-            durac = p->dados->duracao;
-            printf("\n=================================\n");
-            printf("Tarefa de ID %d:\n", p->ID);
-            printf("-> Tarefa: %s\n", p->dados->nome);
-            printf("-> Prioridade: %d\n", p->dados->prioridade);
-            printf("-> Duracao: %d hora(s) e %d minuto(s), %d dias, %d meses e %d anos\n", durac->hora, durac->minuto, durac->dia, durac->mes, durac->ano);
-            printf("-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
-            printf("\n==================================\n");
-            p = p->prox;
-        }
-        printf("\n");
-    }
-}
+    @Return: A lista de "task" sem a "task" com o ID passado como parâmetro
 
-void imprime_Unica_Tarefa(task * t){
-    tmp *ddline; tmp *durac;
-
-    ddline = t->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão
-    durac = t->dados->duracao;
-    printf("\n=================================\n");
-    printf("Tarefa de ID %d:\n", t->ID);
-    printf("-> Tarefa: %s\n", t->dados->nome);
-    printf("-> Prioridade: %d\n", t->dados->prioridade);
-    printf("-> Duracao: %d hora(s) e %d minuto(s), %d dias, %d meses e %d anos\n", durac->hora, durac->minuto, durac->dia, durac->mes, durac->ano);
-    printf("-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
-    printf("\n==================================\n");
-}
-
-//Exclui a tarefa que possui o ID passado como parâmetro
+    Exclui da lista de tarefas a tarefa que possui o ID passado como parâmetro
+*/
 task * excluir_Tarefa(task *l, int ident){
     task *p, *ant;
 
@@ -129,14 +122,14 @@ task * excluir_Tarefa(task *l, int ident){
     }
 
     if(p == NULL){ //Foi até o final da lista
-        printf("\nNenhuma task com esse ID foi encontrada! ");
+        return l;
     }else{ //Encontrou na lista:
         if (ant == NULL){ //É o primero da lista, logo, lista aponta para o próximo
             l = p->prox;
         }else{ //Está no meio da lista. O anterior a este ponteiro apontará para o próximo deste ponteiro
             ant->prox = p->prox;
         }
-            //Desalocando ponteiros das estruturas internas dos dados, depois os dados, e por fim o ponteiro de tarefa
+            //Desalocando ponteiros das estruturas internas dos dados, os dados, e por fim o ponteiro de tarefa
             free(p->dados->duracao);
             free(p->dados->deadline);
             free(p->dados);
@@ -146,7 +139,13 @@ task * excluir_Tarefa(task *l, int ident){
     return l;
 }
 
-//Busca uma tarefa com o ID passado como parâmetro, e devolve um ponteiro para esta tarefa
+/*
+    @Param: Um ponteiro para o início de uma lista de "task", e um inteiro que é o ID de uma task
+
+    @Return: Um ponteiro para a task com o ID passado como parâmetro
+
+    Busca uma tarefa com o ID passado como parâmetro, e devolve um ponteiro para esta tarefa
+*/
 task * busca_Tarefa(task *l, int ident){
     task *p;
 
@@ -164,6 +163,15 @@ task * busca_Tarefa(task *l, int ident){
     }
 }
 
+/*
+    @Param: Um ponteiro para uma task, um array de char, que será o novo nome da tarefa, e um valor inteiro, que será o
+            indicador de prioridade da tarefa.
+    
+    @Return: O ponteiro da task passado como parâmetro, mas com os atributos de nome e prioridade alterados.
+
+    Recebe uma task e altera seus dados de nome e prioridade para os que foram passados como parâmetros da função
+*/
+
 task * edita_Dados(task * t, char editaNome[80], int prior){
     strcpy((t->dados->nome), editaNome);
     t->dados->prioridade = prior;
@@ -171,6 +179,14 @@ task * edita_Dados(task * t, char editaNome[80], int prior){
     return t;
 }
 
+/*
+    @Param: Um ponteiro para uma task, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da Deadline da task,
+            respectivamente.
+
+    @Return: O ponteiro da task passado como parâmetro, mas com a Deadline alterada
+
+    Recebe uma task e altera os dados da estrutura da Deadline para os que foram passados como parâmetros da função
+*/
 task * edita_Deadline(task *t, int d, int m, int a, int h, int min){
     tmp * edit_temp;
     edit_temp = t->dados->deadline;
@@ -184,6 +200,14 @@ task * edita_Deadline(task *t, int d, int m, int a, int h, int min){
     return t;
 }
 
+/*
+    @Param: Um ponteiro para uma task, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da duração da task,
+            respectivamente.
+
+    @Return: O ponteiro da task passado como parâmetro, mas com a duração alterada
+
+    Recebe uma task e altera os dados da estrutura da Duração para os que foram passados como parâmetros da função
+*/
 task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
     tmp * edit_temp;
     edit_temp = t->dados->duracao;

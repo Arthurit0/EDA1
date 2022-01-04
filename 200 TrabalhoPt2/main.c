@@ -138,44 +138,10 @@ task * adiciona_Tarefa_Main(task *l){
     scanf("%d", &prior);
     printf("Digite o dia de início da tarefa (1 a 31): ");
     scanf("%d", &dia);
-
-        printf("%d/%d/%d\n", atual.tm_mday, atual.tm_mon, 2021);
-        if((dia < 1) || (dia > 31)){
-            do{
-                printf("Dia inválido, tente um dia entre 1 e 31, ou digite 0 para cancelar: ");
-                scanf("%d", &dia);
-
-                if(dia == 0) return l;
-        
-            }while((dia < 1) || (dia > 31));
-        }
-
-        printf("Digite o mes de início da tarefa: ");
-        scanf("%d", &mes);
-
-        if((mes < 1) || (mes > 12)){
-            do{
-                printf("Mês inválido, tente um mês entre 1 e 12, ou digite 0 para cancelar: ");
-                scanf("%d", &mes);
-
-                if(mes == 0) return l;
-
-            }while ((mes < 1) || (mes > 12));
-        }
-
-        printf("Digite o ano de início da tarefa: ");
-        scanf("%d", &ano);
-
-        if(ano < 2021){
-            do{
-                printf("Ano inválido, tente um ano depois do ano atual: 2021, ou digite 0 para cancelar: ");
-                scanf("%d", &ano);
-
-                if(ano == 0) return l;
-                
-            }while (ano < 2021);
-        }
-    
+    printf("Digite o mes de início da tarefa: ");
+    scanf("%d", &mes);
+    printf("Digite o ano de início da tarefa: ");
+    scanf("%d", &ano);
     printf("Digite a hora de início da tarefa: ");
     scanf("%d", &hora);
     printf("Digite o minuto de início da tarefa: ");
@@ -194,11 +160,8 @@ task * adiciona_Tarefa_Main(task *l){
 
     tempo = cria_Tempo(dia, mes, ano, hora, min);
     duracao = cria_Tempo(DurDIA, DurMES, DurANO, DurHor, DurMin);
-    
     dados = cria_Dados(nome, prior, tempo, duracao);
-
     l = adiciona_Tarefa(l, dados, ID);
-    
     ID++;
 
     printf("\nTarefa adicionada na sua lista de tarefas!\n\n");
@@ -251,4 +214,41 @@ task * edita_Duracao_Main(task * t){
 
     return edita_Duracao(t, d, m, a, hor, min);
 
+}
+
+//Função para imprimir todas as tarefas
+void mostra_Tarefas(task* l){
+    task *p; tmp *ddline; tmp *durac;
+
+    if(l != NULL){
+        p = l;
+        
+        while(p != NULL){
+            ddline = p->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão
+            durac = p->dados->duracao;
+            printf("\n=================================\n");
+            printf("Tarefa de ID %d:\n", p->ID);
+            printf("-> Tarefa: %s\n", p->dados->nome);
+            printf("-> Prioridade: %d\n", p->dados->prioridade);
+            printf("-> Duracao: %d hora(s) e %d minuto(s), %d dias, %d meses e %d anos\n", durac->hora, durac->minuto, durac->dia, durac->mes, durac->ano);
+            printf("-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
+            printf("\n==================================\n");
+            p = p->prox;
+        }
+        printf("\n");
+    }
+}
+
+void imprime_Unica_Tarefa(task *t){
+    tmp *ddline; tmp *durac;
+
+    ddline = t->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão
+    durac = t->dados->duracao;
+    printf("\n=================================\n");
+    printf("Tarefa de ID %d:\n", t->ID);
+    printf("-> Tarefa: %s\n", t->dados->nome);
+    printf("-> Prioridade: %d\n", t->dados->prioridade);
+    printf("-> Duracao: %d hora(s) e %d minuto(s), %d dias, %d meses e %d anos\n", durac->hora, durac->minuto, durac->dia, durac->mes, durac->ano);
+    printf("-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
+    printf("\n==================================\n");
 }
