@@ -68,7 +68,7 @@ int main(){
 
                 if(edTarefa != NULL){
                     printf("\n1 - EDITAR DADOS (NOME E PRIORIDADE)");
-                    printf("\n2 - EDITAR DATA DE INÍCIO");
+                    printf("\n2 - EDITAR DATA DE inicio");
                     printf("\n3 - EDITAR DURAÇÃO");
                     printf("\n0 - CANCELAR\n");
                     printf("\nSelecione uma opção para editar: ");
@@ -125,7 +125,7 @@ task * adiciona_Tarefa_Main(task *l){
     //Para atribuir em dados:
     char nome[80]; int prior;
     //Para atribuir em tempo:
-    int dia, mes, ano, hora, min;
+    int dia, mes, ano, hora, min, dias_do_mes;
     //Para atribuir em duração:
     int  DurMin, DurHor, DurDIA, DurMES, DurANO;
     //Para associar na task:
@@ -134,17 +134,68 @@ task * adiciona_Tarefa_Main(task *l){
     printf("Digite o nome da tarefa: ");
     fflush(stdin);
     fgets(nome, 80, stdin);
-    printf("Digite a prioridade da tarefa (1 a 5): ");
-    scanf("%d", &prior);
-    printf("Digite o dia de início da tarefa (1 a 31): ");
-    scanf("%d", &dia);
-    printf("Digite o mes de início da tarefa: ");
-    scanf("%d", &mes);
-    printf("Digite o ano de início da tarefa: ");
+
+    do{
+        printf("Digite a prioridade da tarefa (1 a 5): ");
+        scanf("%d", &prior);
+
+        if(prior < 0 || prior > 5){
+            printf("\n\nValor de Prioridade Inválido! ");
+            system("PAUSE");
+        }
+    }while (prior < 0 || prior > 5);
+
+
+    do{
+        printf("Digite o dia de inicio da tarefa: ");
+        scanf("%d", &dia);
+
+        if(dia < 1 || dia > 31){
+            printf("\n\nValor de Dia Inválido! ");
+            system("PAUSE");
+            continue;
+        }
+
+        printf("Digite o mes de inicio da tarefa: ");
+        scanf("%d", &mes);
+
+        if(mes < 1 || mes > 12){
+            printf("\n\nValor de Mes Invalido! ");
+            system("PAUSE");
+            continue;
+        }
+
+        dias_do_mes = verif_calendario(mes, 2000);
+        
+        if(dia > dias_do_mes){
+            printf("\n\nO mes %d possui %d dias, logo, o dia %d eh invalido! ");
+            system("PAUSE");
+            continue;
+        }
+
+    } while ((dia < 1 || dia > 31) || (mes < 1 || mes > 12) || (dia > dias_do_mes));
+
+
+    printf("Digite o ano de inicio da tarefa: ");
     scanf("%d", &ano);
-    printf("Digite a hora de início da tarefa: ");
-    scanf("%d", &hora);
-    printf("Digite o minuto de início da tarefa: ");
+
+    do{
+        printf("Digite a hora de inicio da tarefa: ");
+        scanf("%d", &hora);
+
+        if(hora > 23){
+            printf("\n\nValor de Hora Invalido! ");
+        }
+
+    } while (hora > 23);
+
+    do
+    {
+        
+    } while ();
+
+
+    printf("Digite o minuto de inicio da tarefa: ");
     scanf("%d", &min);
     printf("\nDigite a quantidade de horas, e depois de minutos, da duracao da tarefa:");
     printf("\n-> Horas: ");
@@ -183,15 +234,15 @@ task * edita_Dados_Main(task * t){
 task * edita_Deadline_Main(task * t){
     int d, m, a, hor, min;
 
-    printf("\nDigite o novo dia de início da tarefa: ");
+    printf("\nDigite o novo dia de inicio da tarefa: ");
     scanf("%d", &d);
-    printf("Digite o novo mes de início da tarefa: ");
+    printf("Digite o novo mes de inicio da tarefa: ");
     scanf("%d", &m);
-    printf("Digite o novo ano de início da tarefa: ");
+    printf("Digite o novo ano de inicio da tarefa: ");
     scanf("%d", &a);
-    printf("Digite a nova hora de início da tarefa: ");
+    printf("Digite a nova hora de inicio da tarefa: ");
     scanf("%d", &hor);
-    printf("Digite o novo minuto de início da tarefa: ");
+    printf("Digite o novo minuto de inicio da tarefa: ");
     scanf("%d", &min);
 
     return edita_Deadline(t, d, m, a, hor, min);

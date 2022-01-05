@@ -223,12 +223,17 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
 
 tmp * data_final (tmp *deadline, tmp *duracao){
     tmp * tmpfinal;
-    int d, m, a, h, min, diasDoMes;
+    int d, m, a, h, min, dias_do_mes;
 
+    min = deadline->minuto;
+    h = deadline->hora;
+    d = deadline->dia;
+    m = deadline->mes;
+    a = deadline->ano;
 
     tmpfinal = (tmp *)malloc(sizeof(tmp));
 
-    min = (deadline->minuto) + (duracao->minuto);
+    min += duracao->min;
 
     do{
         if(min >= 60){
@@ -237,7 +242,7 @@ tmp * data_final (tmp *deadline, tmp *duracao){
         }
     }while(min >= 60);
 
-    h += (deadline->hora) + (duracao->hora);
+    h += duracao->hora;
 
     do
     {
@@ -247,19 +252,43 @@ tmp * data_final (tmp *deadline, tmp *duracao){
         }
     } while (h >= 24);
 
-    d += (deadline->dia) + (duracao->dia);
+    d += (duracao->dia);
 
     do
     {
-        diasDoMes = verif_dias_do_mes(deadline->mes, deadline->ano);
+        dias_do_mes = verif_calendario(deadline->mes, deadline->ano);
 
+        if(d > dias_do_mes){
+            d = d - dias_do_mes;
+            m++;
 
-    } while ();
-    
+            if(m > 12){
+                m = 1;
+                a++;
+            }
+
+            dias_do_mes = verif_calendario(deadline->mes, deadline->ano);
+        }
+
+    } while (d > dias_do_mes);
+
+    m += (duracao->mes);
+
+    do
+    {
+        if(m > 12){
+            m = m - 12;
+            a++;
+
+            if(m < 1) m = 1;
+        }        
+    } while (m > 12);
+
+    a += (duracao-> ano);
 
 }
 
-int verif_dias_do_mes(int mes, int ano){
+int verif_calendario(int mes, int ano){
     switch (mes){
         case 1:
             return 31;
@@ -301,6 +330,6 @@ int verif_dias_do_mes(int mes, int ano){
             return 31; 
 
         default:
-            return 0;
+            return -1;
     }
 }
