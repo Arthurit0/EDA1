@@ -230,42 +230,6 @@ tmp * data_final (tmp *deadline, tmp *duracao){
 
     min = ((deadline->minuto) + (duracao->minuto));
 
-    do
-    {
-        if(min >= 60){
-            min = min - 60;
-            h++;
-        }
-    } while (min >= 60);
 
-    h = (deadline->hora) + (duracao->hora);
-
-    do
-    {
-        if(h >= 24){
-            h = h - 24;
-            d++;
-        }
-    } while (h >= 24);
-
-    d = (deadline->dia) + (duracao->dia);
-    
-    do
-    {
-        if(d >= 30){
-            d = d - 29;
-            m++;
-        }
-    } while (d >= 30);
-
-    m = (deadline->mes) + (duracao->mes);
-
-    do
-    {
-        if(m >= 12){
-
-        }
-    } while ();
-    
 
 }
