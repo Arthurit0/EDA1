@@ -223,13 +223,84 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
 
 tmp * data_final (tmp *deadline, tmp *duracao){
     tmp * tmpfinal;
-    int d, m, a, h, min;
+    int d, m, a, h, min, diasDoMes;
 
 
     tmpfinal = (tmp *)malloc(sizeof(tmp));
 
-    min = ((deadline->minuto) + (duracao->minuto));
+    min = (deadline->minuto) + (duracao->minuto);
+
+    do{
+        if(min >= 60){
+            min = min - 60;
+            h++;
+        }
+    }while(min >= 60);
+
+    h += (deadline->hora) + (duracao->hora);
+
+    do
+    {
+        if(h >= 24){
+            h = h - 24;
+            d++;
+        }
+    } while (h >= 24);
+
+    d += (deadline->dia) + (duracao->dia);
+
+    do
+    {
+        diasDoMes = verif_dias_do_mes(deadline->mes, deadline->ano);
 
 
+    } while ();
+    
 
+}
+
+int verif_dias_do_mes(int mes, int ano){
+    switch (mes){
+        case 1:
+            return 31;
+
+        case 2:
+            if(ano % 400 == 0 || (((ano % 4 == 0) && (ano % 100 != 0)))){
+                return 29;
+            }
+            return 28;
+        
+        case 3:
+            return 31;
+
+        case 4:
+            return 30;
+
+        case 5:
+            return 31;
+
+        case 6:
+            return 30;
+
+        case 7:
+            return 31;
+
+        case 8:
+            return 31;
+
+        case 9:
+            return 30;
+
+        case 10:
+            return 31;
+
+        case 11:
+            return 30;
+
+        case 12:
+            return 31; 
+
+        default:
+            return 0;
+    }
 }
