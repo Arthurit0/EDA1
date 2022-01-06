@@ -12,13 +12,14 @@ task * edita_Duracao_Main(task * t);
 int ID;
 
 int main(){
-    setlocale(LC_ALL,"");
+    setlocale(LC_ALL,"pt-BR");
     task *l = NULL, *edTarefa;
     int op = 0, op2, rmvID, edID;
     ID = 1;
 
     do{
         system("cls");
+        
         mostra_Menu();
         scanf("%d", &op);
 
@@ -33,7 +34,7 @@ int main(){
             case 2:
                 system("cls");
                 if(l == NULL){
-                    printf("-> Sem Tarefas! :)\n");
+                    printf("-> Sem Tarefas! :)\n\n");
                 }else{
                     printf("-> Todas as Tarefas:\n");
                     mostra_Tarefas(l);
@@ -49,8 +50,11 @@ int main(){
                     scanf("%d", &rmvID);
 
                     l = excluir_Tarefa(l, rmvID);
+
+                    printf("\nTarefa excluida da lista de tarefas! ");
+
                 }else{
-                    printf("Nao há tarefas! ");
+                    printf("Nao ha tarefas! ");
                 }
                 system("pause");
 
@@ -68,8 +72,8 @@ int main(){
 
                     if(edTarefa != NULL){
                         printf("\n1 - EDITAR DADOS (NOME E PRIORIDADE)");
-                        printf("\n2 - EDITAR DATA DE inicio");
-                        printf("\n3 - EDITAR duracao");
+                        printf("\n2 - EDITAR DATA DE INICIO");
+                        printf("\n3 - EDITAR DURACAO");
                         printf("\n0 - CANCELAR\n");
                         printf("\nSelecione uma opção para editar: ");
                         scanf("%d", &op2);
@@ -119,8 +123,7 @@ int main(){
 }
 
 task * adiciona_Tarefa_Main(task *l){
-    time_t t = time(NULL);
-    struct tm atual = *localtime(&t);
+    tmp * tempofinal;
 
     //Para atribuir em dados:
     char nome[80]; int prior;
@@ -216,7 +219,6 @@ task * adiciona_Tarefa_Main(task *l){
 
     do{
         printf("- Esta e uma tarefa longa (que pode demorar dias, meses e/ou anos)? S/N: ");
-        // scanf("%s", &tarefa_longa);
         fflush(stdin);
         tarefa_longa = getchar();
 
@@ -244,7 +246,11 @@ task * adiciona_Tarefa_Main(task *l){
     l = adiciona_Tarefa(l, dados, ID);
     ID++;
 
-    printf("\nTarefa adicionada na sua lista de tarefas!\n");
+    tempofinal = data_final(tempo, duracao);
+
+    printf("\nTEMPO FINAL: %d:%d (%d/%d/%d)\n", tempofinal->hora, tempofinal->minuto, tempofinal->dia, tempofinal->mes, tempofinal->ano);
+
+    printf("\nTarefa adicionada na sua lista de tarefas! ");
 
     return l;
 }
@@ -308,13 +314,26 @@ void mostra_Tarefas(task* l){
         while(p != NULL){
             ddline = p->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão
             durac = p->dados->duracao;
-            printf("\n=================================\n");
+            printf("\n==================================================================\n");
             printf("Tarefa de ID %d:\n", p->ID);
             printf("-> Tarefa: %s\n", p->dados->nome);
             printf("-> Prioridade: %d\n", p->dados->prioridade);
-            printf("-> Duracao: %d hora(s) e %d minuto(s), %d dias, %d meses e %d anos\n", durac->hora, durac->minuto, durac->dia, durac->mes, durac->ano);
-            printf("-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
-            printf("\n==================================\n");
+            printf("-> Duracao: %d hora(s) e %d minuto(s)", durac->hora, durac->minuto);
+            
+            if(durac->dia > 0){
+                printf(", %d dia(s)", durac->dia);
+            }
+
+            if(durac->mes > 0){
+                printf(", %d mes(es)", durac->mes);
+            }
+
+            if(durac->ano > 0){
+                printf(", %d ano(s)", durac->ano);
+            }
+
+            printf("\n-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
+            printf("\n===================================================================\n");
             p = p->prox;
         }
         printf("\n");
@@ -326,11 +345,63 @@ void imprime_Unica_Tarefa(task *t){
 
     ddline = t->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão
     durac = t->dados->duracao;
-    printf("\n=================================\n");
+    printf("\n==================================================================\n");
     printf("Tarefa de ID %d:\n", t->ID);
     printf("-> Tarefa: %s\n", t->dados->nome);
     printf("-> Prioridade: %d\n", t->dados->prioridade);
-    printf("-> Duracao: %d hora(s) e %d minuto(s), %d dias, %d meses e %d anos\n", durac->hora, durac->minuto, durac->dia, durac->mes, durac->ano);
-    printf("-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
-    printf("\n==================================\n");
+    printf("-> Duracao: %d hora(s) e %d minuto(s)\n", durac->hora, durac->minuto);
+            
+    if(durac->dia > 0){
+        printf(", %d dia(s)", durac->dia);
+    }
+
+    if(durac->mes > 0){
+        printf(", %d mes(es)", durac->mes);
+    }
+
+    if(durac->ano > 0){
+        printf(", %d ano(s)", durac->ano);
+    }
+
+    printf("\n-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
+    printf("\n===================================================================\n");
+}
+
+void mostra_Menu(){
+    time_t t = time(NULL);
+    struct tm atual = *localtime(&t);
+    int dia_hoje = atual.tm_mday, 
+        mes_hoje = atual.tm_mon + 1, 
+        ano_hoje = atual.tm_year + 1900;
+    
+
+    system("cls");
+    printf("|------------------------------------|\n");
+    printf("|         CADASTRO DE TAREFAS        |\n");
+    printf("|------------------------------------|\n");
+    printf("|            ");
+
+    if(dia_hoje < 10){
+        printf(" ");
+    }
+
+    printf("(%d/%d/%d)            ", dia_hoje, mes_hoje, ano_hoje);
+
+    if(mes_hoje < 10){
+        printf(" ");
+    }
+
+    printf("|\n");
+    printf("|____________________________________|\n");
+    printf("|           MENU DE OPCOES           |\n");
+    printf("|------------------------------------|\n");
+    printf("| 1 - INSERIR NOVA TAREFA            |\n");
+    printf("| 2 - VISUALIZAR TAREFAS CADASTRADAS |\n");
+    printf("| 3 - EXCLUIR TAREFA                 |\n");
+    printf("| 4 - EDITAR TAREFA                  |\n");
+    printf("| 5 - INDICAR A TAREFA DO MOMENTO    |\n");
+    printf("| 0 - SAIR                           |\n");
+    printf("|------------------------------------|\n");
+    printf("\n");
+    printf("Selecione uma opcao: ");
 }

@@ -7,25 +7,6 @@
 // Formato de documentação
 // http://www.linhadecodigo.com.br/artigo/1089/phpdoc-documentando-bem-seu-codigo.aspx
 
-void mostra_Menu(){
-    //setlocale(LC_ALL, "pt-BR");
-    system("cls");
-    printf("|------------------------------------|\n");
-    printf("|         CADASTRO DE TAREFAS        |\n");
-    printf("|____________________________________|\n");
-    printf("|           MENU DE OPCOES           |\n");
-    printf("|------------------------------------|\n");
-    printf("| 1 - INSERIR NOVA TAREFA            |\n");
-    printf("| 2 - VISUALIZAR TAREFAS CADASTRADAS |\n");
-    printf("| 3 - EXCLUIR TAREFA                 |\n");
-    printf("| 4 - EDITAR TAREFA                  |\n");
-    printf("| 5 - INDICAR A TAREFA DO MOMENTO    |\n");
-    printf("| 0 - SAIR                           |\n");
-    printf("|------------------------------------|\n");
-    printf("\n");
-    printf("Selecione uma opcao: ");
-}
-
 /*
     @Param: Valores inteiros referentes a dia, mês, ano, hora e minuto, respectivamente
     
@@ -221,6 +202,14 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
     return t;
 }
 
+/*
+
+    @Param: Dois valores inteiros representando um mês e ano
+
+    @Return: Um valor inteiro que representa a quantidade de dias do mês
+
+    Apenas uma função para retornar o número de dias de um mês baseado no número do mês e ano, que afeta o mês de fevereiro em anos bissextos
+*/
 int verif_calendario(int mes, int ano){
     switch (mes){
         case 1:
@@ -270,6 +259,8 @@ int verif_calendario(int mes, int ano){
 tmp * data_final (tmp *deadline, tmp *duracao){
     tmp * tmpfinal;
     int d, m, a, h, min, dias_do_mes;
+
+    tmpfinal = (tmp *)malloc(sizeof(tmp));
 
     min = deadline->minuto;
     h = deadline->hora;
@@ -332,5 +323,48 @@ tmp * data_final (tmp *deadline, tmp *duracao){
 
     a += (duracao-> ano);
 
+    tmpfinal->minuto = min;
+    tmpfinal->hora = h;
+    tmpfinal->dia = d;
+    tmpfinal->mes = m;
+    tmpfinal->ano = a;
+
+    return tmpfinal;
 }
 
+// task * mg_sort_tasks(task *l){
+//     task *e, *d, *mid;
+
+//     if(l == NULL || l->prox == NULL){
+//         return l
+//     }
+
+//     mid = split(l);
+//     e = mg_sort_tasks(l);
+//     d = mg_sort_tasks(mid);
+//     l = merge(e,d);
+
+//     return l;
+// }
+
+// task * split(task *l){
+//     task *x, *y, *p;
+
+//     x=y=l;
+
+//     if(l == NULL || l->prox == NULL) return l;
+    
+//     while(y->prox != NULL){
+//         y = y->prox;
+
+//         if(y->prox != NULL){
+//             x = x->prox;
+//             y = y->prox;
+//         }
+//     }
+
+//     p = x->prox;
+//     x->prox = NULL;
+
+//     return (p);
+// }
