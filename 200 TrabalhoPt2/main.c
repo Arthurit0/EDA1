@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
-#include <windows.h>
 #include "tasks.c"
 
 task * adiciona_Tarefa_Main(task *l);
@@ -168,7 +167,7 @@ task * adiciona_Tarefa_Main(task *l){
         dias_do_mes = verif_calendario(mes, 2000);
         
         if(dia > dias_do_mes){
-            printf("\n\nO mes %d possui %d dias, logo, o dia %d eh invalido! ");
+            printf("\n\nO mes %d possui %d dias, logo, o dia %d eh invalido! ", mes, dias_do_mes, dia);
             system("PAUSE");
             continue;
         }
@@ -189,10 +188,10 @@ task * adiciona_Tarefa_Main(task *l){
 
     } while (hora > 23);
 
-    do
-    {
+    // do
+    // {
         
-    } while ();
+    // } while ();
 
 
     printf("Digite o minuto de inicio da tarefa: ");
@@ -224,7 +223,8 @@ task * edita_Dados_Main(task * t){
     int prior;
 
     printf("\nDigite o novo nome da tarefa: ");
-    scanf("%s", &editaNome);
+    fflush(stdin);
+    fgets(editaNome, 80, stdin);
     printf("Digite a nova prioridade da tarefa: ");
     scanf("%d", &prior);
 

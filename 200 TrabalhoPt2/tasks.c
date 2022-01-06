@@ -221,6 +221,52 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
     return t;
 }
 
+int verif_calendario(int mes, int ano){
+    switch (mes){
+        case 1:
+            return 31;
+
+        case 2:
+            if(ano % 400 == 0 || (((ano % 4 == 0) && (ano % 100 != 0)))){
+                return 29;
+            }
+            return 28;
+        
+        case 3:
+            return 31;
+
+        case 4:
+            return 30;
+
+        case 5:
+            return 31;
+
+        case 6:
+            return 30;
+
+        case 7:
+            return 31;
+
+        case 8:
+            return 31;
+
+        case 9:
+            return 30;
+
+        case 10:
+            return 31;
+
+        case 11:
+            return 30;
+
+        case 12:
+            return 31; 
+
+        default:
+            return -1;
+    }
+}
+
 tmp * data_final (tmp *deadline, tmp *duracao){
     tmp * tmpfinal;
     int d, m, a, h, min, dias_do_mes;
@@ -233,7 +279,7 @@ tmp * data_final (tmp *deadline, tmp *duracao){
 
     tmpfinal = (tmp *)malloc(sizeof(tmp));
 
-    min += duracao->min;
+    min += duracao->minuto;
 
     do{
         if(min >= 60){
@@ -288,48 +334,3 @@ tmp * data_final (tmp *deadline, tmp *duracao){
 
 }
 
-int verif_calendario(int mes, int ano){
-    switch (mes){
-        case 1:
-            return 31;
-
-        case 2:
-            if(ano % 400 == 0 || (((ano % 4 == 0) && (ano % 100 != 0)))){
-                return 29;
-            }
-            return 28;
-        
-        case 3:
-            return 31;
-
-        case 4:
-            return 30;
-
-        case 5:
-            return 31;
-
-        case 6:
-            return 30;
-
-        case 7:
-            return 31;
-
-        case 8:
-            return 31;
-
-        case 9:
-            return 30;
-
-        case 10:
-            return 31;
-
-        case 11:
-            return 30;
-
-        case 12:
-            return 31; 
-
-        default:
-            return -1;
-    }
-}
