@@ -149,7 +149,6 @@ task * adiciona_Tarefa_Main(task *l){
         }
     }while (prior < 1 || prior > 5);
 
-
     do{
         printf("- Digite o dia de inicio da tarefa: ");
         scanf("%d", &dia);
@@ -181,7 +180,6 @@ task * adiciona_Tarefa_Main(task *l){
         }
 
     } while ((dia < 1 || dia > 31) || (mes < 1 || mes > 12) || (dia > dias_do_mes));
-
 
     printf("- Digite o ano de inicio da tarefa: ");
     scanf("%d", &ano);
@@ -230,7 +228,6 @@ task * adiciona_Tarefa_Main(task *l){
 
     } while ((tarefa_longa != 's') && (tarefa_longa != 'S') && (tarefa_longa != 'n') && (tarefa_longa != 'N'));
     
-
     if(tarefa_longa == 's' || tarefa_longa == 'S'){
         printf("-> Dias: ");
         scanf("%d", &dur_dia);
@@ -404,4 +401,5 @@ void mostra_Menu(){
     printf("|------------------------------------|\n");
     printf("\n");
     printf("Selecione uma opcao: ");
+    
 }
