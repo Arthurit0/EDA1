@@ -12,7 +12,7 @@ task * edita_Duracao_Main(task * t);
 int ID;
 
 int main(){
-    setlocale(LC_ALL,"pt-BR");
+    setlocale(LC_ALL,"Portuguese");
     task *l = NULL, *edTarefa;
     int op = 0, op2, rmvID, edID;
     ID = 1;
@@ -149,6 +149,8 @@ task * adiciona_Tarefa_Main(task *l){
         }
     }while (prior < 1 || prior > 5);
 
+    printf("\n==> DATA DE INICIO:\n\n");
+
     do{
         printf("- Digite o dia de inicio da tarefa: ");
         scanf("%d", &dia);
@@ -185,7 +187,7 @@ task * adiciona_Tarefa_Main(task *l){
     scanf("%d", &ano);
 
     do{
-        printf("-- Digite a hora de inicio da tarefa: ");
+        printf("--> Digite a hora de inicio da tarefa: ");
         scanf("%d", &hora);
 
         if(hora < 0 || hora > 23){
@@ -198,7 +200,7 @@ task * adiciona_Tarefa_Main(task *l){
 
     do
     {
-        printf("-- Digite o minuto de inicio da tarefa: ");
+        printf("--> Digite o minuto de inicio da tarefa: ");
         scanf("%d", &min);
 
         if(min < 0 || min > 59){
@@ -207,6 +209,8 @@ task * adiciona_Tarefa_Main(task *l){
             printf("\n");
         }
     } while (min < 0 || min > 59);
+
+    printf("\nDURACAO DA TAREFA:\n\n");
 
     printf("\n- Digite a quantidade estimada da duracao da tarefa: ");
     printf("\n-> Horas: ");
@@ -399,6 +403,7 @@ void mostra_Menu(){
     printf("| 5 - INDICAR A TAREFA DO MOMENTO    |\n");
     printf("| 0 - SAIR                           |\n");
     printf("|------------------------------------|\n");
+    printf("\néáíóúãõâêîôûç\n\n");
     printf("\n");
     printf("Selecione uma opcao: ");
     
