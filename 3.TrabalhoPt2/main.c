@@ -75,7 +75,7 @@ int main(){
                         printf("\n2 - EDITAR DATA DE INICIO");
                         printf("\n3 - EDITAR DURACAO");
                         printf("\n0 - CANCELAR\n");
-                        printf("\nSelecione uma opção para editar: ");
+                        printf("\nSelecione uma opcao para editar: ");
                         scanf("%d", &op2);
 
                         switch (op2){
@@ -130,7 +130,7 @@ task * adiciona_Tarefa_Main(task *l){
     //Para atribuir em tempo:
     int dia, mes, ano, hora, min, dias_do_mes;
     //Para atribuir em duracao:
-    int  dur_min, dur_hora, dur_dia = 0, dur_mes = 0, dur_ano = 0; char tarefa_longa;
+    int  dur_min, dur_hora, dur_dia = -1, dur_mes = -1, dur_ano = -1; char tarefa_longa;
     //Para associar na task:
     reg *dados; tmp *tempo; tmp *duracao;
 
@@ -212,7 +212,7 @@ task * adiciona_Tarefa_Main(task *l){
 
     printf("\nDURACAO DA TAREFA:\n\n");
 
-    printf("\n- Digite a quantidade estimada da duracao da tarefa: ");
+    printf("- Digite a quantidade estimada da duracao da tarefa: ");
     printf("\n-> Horas: ");
     scanf("%d", &dur_hora);
     printf("-> Minutos: ");
@@ -266,6 +266,8 @@ task * edita_Dados_Main(task * t){
     printf("Digite a nova prioridade da tarefa: ");
     scanf("%d", &prior);
 
+    printf("\nDados editados! ");
+
     return edita_Dados(t, editaNome, prior);
 }
 
@@ -283,26 +285,39 @@ task * edita_Deadline_Main(task * t){
     printf("Digite o novo minuto de inicio da tarefa: ");
     scanf("%d", &min);
 
-    return edita_Deadline(t, d, m, a, hor, min);
+    printf("\nDeadline alterada! ");
 
+    return edita_Deadline(t, d, m, a, hor, min);
 }
 
 task * edita_Duracao_Main(task * t){
     int d, m, a, hor, min;
+    tmp *dur = t->dados->deadline;
+
 
     printf("Digite o novo tempo em horas da duracao da tarefa: ");
     scanf("%d", &hor);
     printf("Digite o novo tempo em minutos da duracao da tarefa: ");
     scanf("%d", &min);
-    printf("\nDigite o novo tempo em dias da duracao da tarefa: ");
-    scanf("%d", &d);
-    printf("Digite o novo tempo em meses da duracao da tarefa: ");
-    scanf("%d", &m);
-    printf("Digite o novo tempo em anos da duracao da tarefa: ");
-    scanf("%d", &a);
+    
+    if(dur->dia != -1){
+        printf("\nDigite o novo tempo em dias da duracao da tarefa: ");
+        scanf("%d", &d);
+    }
+    
+    if(dur->mes != -1){
+        printf("Digite o novo tempo em meses da duracao da tarefa: ");
+        scanf("%d", &m);
+    }
+    
+    if(dur->ano){
+        printf("Digite o novo tempo em anos da duracao da tarefa: ");
+        scanf("%d", &a);
+    }
+
+    printf("\nDuracao alterada! ");
 
     return edita_Duracao(t, d, m, a, hor, min);
-
 }
 
 //Função para imprimir todas as tarefas
@@ -403,7 +418,6 @@ void mostra_Menu(){
     printf("| 5 - INDICAR A TAREFA DO MOMENTO    |\n");
     printf("| 0 - SAIR                           |\n");
     printf("|------------------------------------|\n");
-    printf("\néáíóúãõâêîôûç\n\n");
     printf("\n");
     printf("Selecione uma opcao: ");
     

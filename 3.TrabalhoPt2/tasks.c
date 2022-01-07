@@ -208,7 +208,7 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
 
     @Return: Um valor inteiro que representa a quantidade de dias do mês
 
-    Apenas uma função para retornar o número de dias de um mês baseado no número do mês e ano, que afeta o mês de fevereiro em anos bissextos
+    Apenas uma função para retornar o número de dias de um mês baseado no número do mês e também do ano, que afeta o mês de fevereiro em anos bissextos
 */
 int verif_calendario(int mes, int ano){
     switch (mes){
@@ -216,7 +216,7 @@ int verif_calendario(int mes, int ano){
             return 31;
 
         case 2:
-            if(ano % 400 == 0 || (((ano % 4 == 0) && (ano % 100 != 0)))){
+            if((ano % 400 == 0) || (((ano % 4 == 0) && (ano % 100 != 0)))){
                 return 29;
             }
             return 28;
@@ -262,13 +262,29 @@ tmp * data_final (tmp *deadline, tmp *duracao){
 
     tmpfinal = (tmp *)malloc(sizeof(tmp));
 
-    min = deadline->minuto;
-    h = deadline->hora;
-    d = deadline->dia;
+    min = ((deadline->minuto) % 60);
+    h = ((deadline->hora) % 24) + ((deadline->minuto) / 60);
+
+    d = deadline->dia + ((deadline->hora) / 24);
     m = deadline->mes;
     a = deadline->ano;
 
-    tmpfinal = (tmp *)malloc(sizeof(tmp));
+    dias_do_mes = verif_calendario(m, a);
+
+    do{
+        if(d > dias_do_mes){
+            d = d - dias_do_mes;
+            m++;
+
+            if(m > 12){
+                m = m - 12;
+                a++;
+            }
+
+            dias_do_mes = verif_calendario(m, a);
+        }
+
+    } while (d > dias_do_mes);
 
     min += duracao->minuto;
 
@@ -277,94 +293,123 @@ tmp * data_final (tmp *deadline, tmp *duracao){
             min = min - 60;
             h++;
         }
-    }while(min >= 60);
 
+    } while (min >= 60);
+    
     h += duracao->hora;
 
-    do
-    {
+    do{
         if(h >= 24){
             h = h - 24;
             d++;
         }
     } while (h >= 24);
 
-    d += (duracao->dia);
+    d += duracao->dia;
 
-    do
-    {
-        dias_do_mes = verif_calendario(deadline->mes, deadline->ano);
-
+    do{
         if(d > dias_do_mes){
             d = d - dias_do_mes;
             m++;
 
             if(m > 12){
-                m = 1;
+                m = m - 12;
                 a++;
             }
 
-            dias_do_mes = verif_calendario(deadline->mes, deadline->ano);
+            dias_do_mes = verif_calendario(m, a);
         }
-
     } while (d > dias_do_mes);
 
-    m += (duracao->mes);
+    m += duracao->mes;
 
-    do
-    {
+    do{
         if(m > 12){
             m = m - 12;
             a++;
 
-            if(m < 1) m = 1;
-        }        
+        }
     } while (m > 12);
 
-    a += (duracao-> ano);
+    a += duracao->ano;
 
     tmpfinal->minuto = min;
     tmpfinal->hora = h;
     tmpfinal->dia = d;
     tmpfinal->mes = m;
     tmpfinal->ano = a;
-
+    
     return tmpfinal;
 }
 
-// task * mg_sort_tasks(task *l){
-//     task *e, *d, *mid;
+task * mg_sort_tasks(task *l){
+    task *e, *d, *mid;
 
-//     if(l == NULL || l->prox == NULL){
-//         return l
-//     }
+    if(l == NULL || l->prox == NULL){
+        return l
+    }
 
-//     mid = split(l);
-//     e = mg_sort_tasks(l);
-//     d = mg_sort_tasks(mid);
-//     l = merge(e,d);
+    mid = split(l);
+    e = mg_sort_tasks(l);
+    d = mg_sort_tasks(mid);
+    l = merge(e,d);
 
-//     return l;
-// }
+    return l;
+}
 
-// task * split(task *l){
-//     task *x, *y, *p;
+task * split(task *l){
+    task *x, *y, *p;
 
-//     x=y=l;
+    x=y=l;
 
-//     if(l == NULL || l->prox == NULL) return l;
+    if(l == NULL || l->prox == NULL) return l;
     
-//     while(y->prox != NULL){
-//         y = y->prox;
+    while(y->prox != NULL){
+        y = y->prox;
 
-//         if(y->prox != NULL){
-//             x = x->prox;
-//             y = y->prox;
-//         }
-//     }
+        if(y->prox != NULL){
+            x = x->prox;
+            y = y->prox;
+        }
+    }
 
-//     p = x->prox;
-//     x->prox = NULL;
+    p = x->prox;
+    x->prox = NULL;
 
-//     return (p);
-// }
+    return (p);
+}
+
+no * merge(no *e, no *d){
+    no *l, *p;
+    l = NULL;
+
+    while((e != NULL) && (d != NULL)){
+        if((e->dado) < (d->dado)){
+            l = adiciona_final(l,(e->dado));
+            p = e;
+            e = e->prox;
+            free(p);
+        }else{
+            l = adiciona_final(l,(d->dado));
+            p = d;
+            d = d->prox;
+            free(p);
+        }
+    }
+
+        while(d != NULL){
+            l = adiciona_final(l, d->dado);
+            p = d;
+            d = d->prox;
+            free(p);
+        }
+
+        while(e != NULL){
+            l = adiciona_final(l, e->dado);
+            p = e;
+            e = e->prox;
+            free(p);
+        }
+
+        return l;
+}
