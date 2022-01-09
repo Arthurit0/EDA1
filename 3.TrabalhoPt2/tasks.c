@@ -255,6 +255,7 @@ int verif_calendario(int mes, int ano){
     }
 }
 
+
 tmp * data_final (tmp *deadline, tmp *duracao){
     tmp * tmpfinal;
     int d, m, a, h, min, dias_do_mes;
@@ -469,5 +470,4 @@ int data_anterior_a(task *a, task *d){
     //Mesma prioridade, então tanto faz...
 
     return 1;
-
 }

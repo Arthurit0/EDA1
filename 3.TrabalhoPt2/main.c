@@ -324,6 +324,8 @@ task * edita_Duracao_Main(task * t){
 void mostra_Tarefas(task* l){
     task *p; tmp *ddline; tmp *durac;
 
+    l = mg_sort_tasks(l);
+
     if(l != NULL){
         p = l;
         

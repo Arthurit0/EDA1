@@ -40,3 +40,7 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min);
 
 int verif_calendario(int mes, int ano);
 tmp * data_final (tmp *deadline, tmp *duracao);
+task * mg_sort_tasks(task *l);
+task * split(task *l);
+task * merge(task *e, task *d);
+int data_anterior_a(task *a, task *d);
