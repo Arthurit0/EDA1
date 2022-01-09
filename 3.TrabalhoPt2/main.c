@@ -4,6 +4,9 @@
 #include <locale.h>
 #include "tasks.c"
 
+void mostra_Menu();
+void mostra_Tarefas(task* l);
+void imprime_Unica_Tarefa(task *t);
 task * adiciona_Tarefa_Main(task *l);
 task * edita_Dados_Main(task * t);
 task * edita_Deadline_Main(task * t);
@@ -236,7 +239,7 @@ task * adiciona_Tarefa_Main(task *l){
     tempo = cria_Tempo(dia, mes, ano, hora, min);
     duracao = cria_Tempo(dur_dia, dur_mes, dur_ano, dur_hora, dur_min);
     dados = cria_Dados(nome, prior, tempo, duracao);
-    l = adiciona_Tarefa(l, dados, ID);
+    l = adiciona_nova_Tarefa(l, dados, ID);
     ID++;
 
     tempofinal = data_final(tempo, duracao);
