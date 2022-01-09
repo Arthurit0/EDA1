@@ -10,7 +10,7 @@ void postorder_edr(arvore r);
 
 int main(){
     nodo *l = NULL, *buscado;
-    int buscar_chave;
+    int chave;
 
     l = insere(l, cria_nodo(8, 10));
     l = insere(l, cria_nodo(3, 11));
@@ -24,24 +24,31 @@ int main(){
 
     printf("Inorder: ");
     inorder_erd(l);
-    printf("\n\nPreorder: ");
+    printf("\nPreorder: ");
     preorder_red(l);
-    printf("\n\nPostorder: ");
+    printf("\nPostorder: ");
     postorder_edr(l);
 
     printf("\n\nBusque por um nodo: ");
-    scanf("%d", &buscar_chave);
+    scanf("%d", &chave);
 
-    buscado = busca(l, buscar_chave);
+    buscado = busca(l, chave);
 
     if(buscado != NULL){
-        printf("Chave %d encontrada com conteudo %d!", buscado->chave, buscado->conteudo);
+        printf("\nChave %d encontrada com conteudo %d!", buscado->chave, buscado->conteudo);
     }else{
-        printf("Chave %d nao encontrada!", buscar_chave);
+        printf("\nChave %d nao encontrada!", chave);
     }
 
-    printf("\n");
+    printf("\n\nRemova um nodo: ");
+    scanf("%d", &chave);
 
+    l = busca_remove(l, chave);
+
+    printf("\nNovo Inorder: ");
+    inorder_erd(l);
+
+    printf("\n");
     return 0;
 }
 
