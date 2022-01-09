@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-//#include <locale.h>
 #include "tasks.h"
 
 // Formato de documentação
@@ -346,7 +345,7 @@ task * mg_sort_tasks(task *l){
     task *e, *d, *mid;
 
     if(l == NULL || l->prox == NULL){
-        return l
+        return l;
     }
 
     mid = split(l);
@@ -379,18 +378,19 @@ task * split(task *l){
     return (p);
 }
 
-no * merge(no *e, no *d){
-    no *l, *p;
+task * merge(task *e, task *d){
+    task *l, *p;
     l = NULL;
 
     while((e != NULL) && (d != NULL)){
-        if((e->dado) < (d->dado)){
-            l = adiciona_final(l,(e->dado));
+
+        if(data_anterior_a(e, d) == 1){ //(e->dado) < (d->dado)
+            l = adiciona_final(l, e);
             p = e;
             e = e->prox;
             free(p);
         }else{
-            l = adiciona_final(l,(d->dado));
+            l = adiciona_final(l, d);
             p = d;
             d = d->prox;
             free(p);
@@ -398,18 +398,76 @@ no * merge(no *e, no *d){
     }
 
         while(d != NULL){
-            l = adiciona_final(l, d->dado);
+            l = adiciona_final(l, d);
             p = d;
             d = d->prox;
             free(p);
         }
 
         while(e != NULL){
-            l = adiciona_final(l, e->dado);
+            l = adiciona_final(l, e);
             p = e;
             e = e->prox;
             free(p);
         }
 
         return l;
+}
+
+int data_anterior_a(task *a, task *d){
+    tmp *ant, *dep;
+
+    ant = a->dados->deadline;
+    dep = a->dados->deadline;
+
+    if(ant->ano < dep->ano){
+        return 1;
+    }else if(ant->ano > dep->ano){
+        return 0;
+    }
+
+    //Se chegou aqui, ambas são no mesmo ano
+
+    if(ant->mes < dep->mes){
+        return 1;
+    }else if(ant->mes > dep->mes){
+        return 0;
+    }
+
+    //Se chegou aqui, mesmo mês
+
+    if(ant->dia < dep->dia){
+        return 1;
+    }else if(ant->dia > dep->dia){
+        return 0;
+    }
+
+    //Mesmo dia
+
+    if(ant->hora < dep->hora){
+        return 1;
+    }else if(ant->hora > dep->hora){
+        return 0;
+    }
+
+    //Mesma hora
+
+    if(ant->minuto < dep->minuto){
+        return 1;
+    }else if(ant->minuto > dep->minuto){
+        return 0;
+    }
+
+    //Mesmo minuto
+
+    if(a->dados->prioridade > d->dados->prioridade){
+        return 1;
+    }else if(a->dados->prioridade < d->dados->prioridade){
+        return 0;
+    }
+
+    //Mesma prioridade, então tanto faz...
+
+    return 1;
+
 }
