@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
+#include <string.h>
 #include "tasks.c"
 
 void mostra_Menu();
 void mostra_Tarefas(task* l);
 void imprime_Unica_Tarefa(task *t);
+void system_pause();
 task * adiciona_Tarefa_Main(task *l);
 task * edita_Dados_Main(task * t);
 task * edita_Deadline_Main(task * t);
@@ -119,6 +121,7 @@ int main(){
                 printf("\nOpção inválida, tente novamente! ");
                 break;
         }
+        system("clear");
     }while(op != 0);
 
     return 0;
@@ -137,7 +140,8 @@ task * adiciona_Tarefa_Main(task *l){
     reg *dados; tmp *tempo; tmp *duracao;
 
     printf("- Digite o nome da tarefa: ");
-    fflush(stdin);
+    // fflush(stdin);
+    getchar();
     fgets(nome, 80, stdin);
 
     do{
@@ -146,6 +150,7 @@ task * adiciona_Tarefa_Main(task *l){
 
         if(prior < 1 || prior > 5){
             printf("\nValor de prioridade inválido! ");
+            system_pause();
             printf("\n");
         }
     }while (prior < 1 || prior > 5);
@@ -158,6 +163,7 @@ task * adiciona_Tarefa_Main(task *l){
 
         if(dia < 1 || dia > 31){
             printf("\nValor de dia inválido! ");
+            system_pause();
             printf("\n");
             continue;
         }
@@ -167,6 +173,7 @@ task * adiciona_Tarefa_Main(task *l){
 
         if(mes < 1 || mes > 12){
             printf("\nValor de mês inválido! ");
+            system_pause();
             printf("\n");
             continue;
         }
@@ -175,21 +182,31 @@ task * adiciona_Tarefa_Main(task *l){
         
         if(dia > dias_do_mes){
             printf("\nO mês %d possui %d dias, logo, o dia %d é inválido! ", mes, dias_do_mes, dia);
+            system_pause();
             printf("\n");
-            continue;
         }
 
     } while ((dia < 1 || dia > 31) || (mes < 1 || mes > 12) || (dia > dias_do_mes));
 
-    printf("- Digite o ano de início da tarefa: ");
-    scanf("%d", &ano);
+    do
+    {
+        printf("- Digite o ano de início da tarefa: ");
+        scanf("%d", &ano);
 
+        if(ano < 1990 ){
+            printf("\nValor de ano inválido! ");
+            system_pause();
+            printf("\n");
+        }
+    } while (ano < 1990);
+    
     do{
         printf("--> Digite a hora de início da tarefa: ");
         scanf("%d", &hora);
 
         if(hora < 0 || hora > 23){
             printf("\nValor de hora inválido! ");
+            system_pause();
             printf("\n");
         }
 
@@ -202,38 +219,87 @@ task * adiciona_Tarefa_Main(task *l){
 
         if(min < 0 || min > 59){
             printf("\nValor de minuto inválido! ");
+            system_pause();
             printf("\n");
         }
     } while (min < 0 || min > 59);
 
-    printf("\nDURAÇÃO DA TAREFA:\n\n");
+    printf("\nDURAÇÃO DA TAREFA:\n");
 
-    printf("\n- Digite a quantidade estimada da duração da tarefa em: ");
-    printf("\n-> Horas: ");
-    scanf("%d", &dur_hora);
-    printf("-> Minutos: ");
-    scanf("%d", &dur_min);
-    printf("\n");
+    printf("\n- Digite a quantidade estimada da duração da tarefa em:\n");
+    
+    do{
+        printf("-> Horas: ");
+        scanf("%d", &dur_hora);
+
+        if(dur_hora < 0){
+            printf("\nValor de duração em horas inválida! ");
+            system_pause();
+            printf("\n");
+        }
+
+    } while (dur_hora < 0);
 
     do{
-        printf("- Esta é uma tarefa longa (que pode demorar dias, meses e/ou anos)? S/N: ");
-        fflush(stdin);
+        printf("-> Minutos: ");
+        scanf("%d", &dur_min);
+
+        if(dur_min < 0){
+            printf("\nValor de duração em minutos inválida! ");
+            system_pause();
+            printf("\n");
+        }
+
+    } while (dur_min < 0);
+
+    do{
+        printf("\n- Esta é uma tarefa longa (que pode demorar dias, meses e/ou anos)? S/N: ");
+        getchar();
         tarefa_longa = getchar();
 
         if(tarefa_longa != 's' && tarefa_longa != 'S' && tarefa_longa != 'n' && tarefa_longa != 'N'){
-            printf("\nOpcao inválida, tente novamente! ");
+            printf("\nOpção inválida, tente novamente! ");
+            system_pause();
             printf("\n");
         }
 
     } while ((tarefa_longa != 's') && (tarefa_longa != 'S') && (tarefa_longa != 'n') && (tarefa_longa != 'N'));
     
     if(tarefa_longa == 's' || tarefa_longa == 'S'){
-        printf("-> Dias: ");
-        scanf("%d", &dur_dia);
-        printf("-> Meses: ");
-        scanf("%d", &dur_mes);
-        printf("-> Anos: ");
-        scanf("%d", &dur_ano);
+
+        do{
+            printf("-> Dias: ");
+            scanf("%d", &dur_dia);
+        
+            if(dur_dia < 0){
+                printf("\nValor de duração em dias inválido! ");
+                system_pause();
+                printf("\n");
+            }
+        } while (dur_dia < 0);
+
+        do{
+            printf("-> Meses: ");
+            scanf("%d", &dur_mes);
+        
+            if(dur_mes < 0){
+                printf("\nValor de duração em meses inválido! ");
+                system_pause();
+                printf("\n");
+            }
+        } while (dur_mes < 0);
+
+        do{
+            printf("-> Anos: ");
+            scanf("%d", &dur_ano);
+        
+            if(dur_ano < 0){
+                printf("\nValor de duração em anos inválido! ");
+                system_pause();
+                printf("\n");
+            }
+        } while (dur_ano < 0);
+
     }
 
     tempo = cria_Tempo(dia, mes, ano, hora, min);
@@ -244,9 +310,8 @@ task * adiciona_Tarefa_Main(task *l){
 
     tempofinal = data_final(tempo, duracao);
 
-    printf("\nTEMPO FINAL: %d:%d (%d/%d/%d)\n", tempofinal->hora, tempofinal->minuto, tempofinal->dia, tempofinal->mes, tempofinal->ano);
-
     printf("\nTarefa adicionada na sua lista de tarefas! ");
+    system_pause();
 
     return l;
 }
@@ -368,26 +433,60 @@ void mostra_Menu(){
     struct tm atual = *localtime(&t);
     int dia_hoje = atual.tm_mday, 
         mes_hoje = atual.tm_mon + 1, 
-        ano_hoje = atual.tm_year + 1900;
+        ano_hoje = atual.tm_year + 1900,
+        hora_hoje = atual.tm_hour,
+        minuto_hoje = atual.tm_min;
     
 
     system("clear");
     printf("|------------------------------------|\n");
     printf("|         CADASTRO DE TAREFAS        |\n");
     printf("|------------------------------------|\n");
-    printf("|            ");
 
+    // printf("|            ");
+    // if(dia_hoje < 10){
+    //     printf(" ");
+    // }
+
+    // printf("(%d/%d/%d)            ", dia_hoje, mes_hoje, ano_hoje);
+
+    // if(mes_hoje < 10){
+    //     printf(" ");
+    // }
+
+    
+    printf("|            (");
+    
     if(dia_hoje < 10){
-        printf(" ");
+        printf("0");
     }
 
-    printf("(%d/%d/%d)            ", dia_hoje, mes_hoje, ano_hoje);
+    printf("%d/", dia_hoje);
 
     if(mes_hoje < 10){
-        printf(" ");
+        printf("0");
     }
 
+    printf("%d/%d)            ", mes_hoje, ano_hoje);
     printf("|\n");
+
+
+    // printf("|               %d:%d                |\n", hora_hoje, minuto_hoje);
+
+    printf("|               ");
+
+    if(hora_hoje < 10){
+        printf("0");
+    }
+
+    printf("%d:", hora_hoje);
+
+    if(minuto_hoje < 10){
+        printf("0");
+    }
+
+    printf("%d                |\n", minuto_hoje);
+
     printf("|____________________________________|\n");
     printf("|           MENU DE OPÇÕES           |\n");
     printf("|------------------------------------|\n");
@@ -400,4 +499,11 @@ void mostra_Menu(){
     printf("|------------------------------------|\n");
     printf("\n");
     printf("Selecione uma das opções: ");
+}
+
+void system_pause(){
+    char continuar;
+    printf("Pressione Enter para continuar...");
+    getchar();
+    scanf("%c", &continuar);
 }
