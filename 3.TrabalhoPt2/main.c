@@ -18,7 +18,7 @@ int main(){
     ID = 1;
 
     do{
-        system("cls");
+        system("clear");
         
         mostra_Menu();
         scanf("%d", &op);
@@ -26,24 +26,22 @@ int main(){
         switch (op){
 
             case 1:
-                system("cls");
+                system("clear");
                 l = adiciona_Tarefa_Main(l);
-                system("pause");
                 break;
 
             case 2:
-                system("cls");
+                system("clear");
                 if(l == NULL){
                     printf("-> Sem Tarefas! :)\n\n");
                 }else{
                     printf("-> Todas as Tarefas:\n");
                     mostra_Tarefas(l);
                 }
-                system("pause");
                 break;
 
             case 3:
-                system("cls");
+                system("clear");
                 if(l != NULL){
                     mostra_Tarefas(l);
                     printf("Digite o ID da tarefa que deseja excluir: ");
@@ -51,17 +49,16 @@ int main(){
 
                     l = excluir_Tarefa(l, rmvID);
 
-                    printf("\nTarefa excluida da lista de tarefas! ");
+                    printf("\nTarefa excluída da lista de tarefas! ");
 
                 }else{
-                    printf("Nao ha tarefas! ");
+                    printf("Não há tarefas! ");
                 }
-                system("pause");
 
                 break;
 
             case 4:
-                system("cls");
+                system("clear");
                 
                 if(l != NULL){
                     printf("Digite o ID da tarefa: ");
@@ -72,8 +69,8 @@ int main(){
 
                     if(edTarefa != NULL){
                         printf("\n1 - EDITAR DADOS (NOME E PRIORIDADE)");
-                        printf("\n2 - EDITAR DATA DE INICIO");
-                        printf("\n3 - EDITAR DURACAO");
+                        printf("\n2 - EDITAR DATA DE INÍCIO");
+                        printf("\n3 - EDITAR DURAÇÃO");
                         printf("\n0 - CANCELAR\n");
                         printf("\nSelecione uma opção para editar: ");
                         scanf("%d", &op2);
@@ -82,30 +79,33 @@ int main(){
 
                             case 1:
                                 edTarefa = edita_Dados_Main(edTarefa);
+                                printf("\nDados da tarefa alterados! ");
+
                                 break;
                             
                             case 2:
                                 edTarefa = edita_Deadline_Main(edTarefa);
+                                printf("\nDeadline da tarefa alterado! ");
                                 break;
                             
                             case 3:
                                 edTarefa = edita_Duracao_Main(edTarefa);
+                                printf("\nDuração da tarefa alterada! ");
                                 break;
                             
                             case 0:
                                 break;
 
                             default:
-                                printf("\nOpcao invalida, tente novamente! ");
+                                printf("\nOpção inválida, tente novamente! ");
                                 break;
                         }
                     }else{
-                        printf("\nTarefa nao encontrada! ");
+                        printf("\nTarefa não encontrada! ");
                     }
                 }else{
-                    printf("Nao ha tarefas! ");
+                    printf("Nao há tarefas! ");
                 }
-                system("pause");
 
                 break;
 
@@ -113,8 +113,7 @@ int main(){
                 break;
             
             default:
-                printf("\nOpcao invalida, tente novamente! ");
-                system("pause");
+                printf("\nOpção inválida, tente novamente! ");
                 break;
         }
     }while(op != 0);
@@ -143,31 +142,28 @@ task * adiciona_Tarefa_Main(task *l){
         scanf("%d", &prior);
 
         if(prior < 1 || prior > 5){
-            printf("\nValor de Prioridade Invalido! ");
-            system("pause");
+            printf("\nValor de prioridade inválido! ");
             printf("\n");
         }
     }while (prior < 1 || prior > 5);
 
-    printf("\n==> DATA DE INICIO:\n\n");
+    printf("\n==> DATA DE INÍCIO:\n\n");
 
     do{
-        printf("- Digite o dia de inicio da tarefa: ");
+        printf("- Digite o dia de início da tarefa: ");
         scanf("%d", &dia);
 
         if(dia < 1 || dia > 31){
-            printf("\nValor de Dia Invalido! ");
-            system("pause");
+            printf("\nValor de dia inválido! ");
             printf("\n");
             continue;
         }
 
-        printf("- Digite o mes de inicio da tarefa: ");
+        printf("- Digite o mês de início da tarefa: ");
         scanf("%d", &mes);
 
         if(mes < 1 || mes > 12){
-            printf("\nValor de Mes Invalido! ");
-            system("pause");
+            printf("\nValor de mês inválido! ");
             printf("\n");
             continue;
         }
@@ -175,24 +171,22 @@ task * adiciona_Tarefa_Main(task *l){
         dias_do_mes = verif_calendario(mes, 2000);
         
         if(dia > dias_do_mes){
-            printf("\nO Mes %d possui %d Dias, logo, o Dia %d e invalido! ", mes, dias_do_mes, dia);
-            system("pause");
+            printf("\nO mês %d possui %d dias, logo, o dia %d é inválido! ", mes, dias_do_mes, dia);
             printf("\n");
             continue;
         }
 
     } while ((dia < 1 || dia > 31) || (mes < 1 || mes > 12) || (dia > dias_do_mes));
 
-    printf("- Digite o ano de inicio da tarefa: ");
+    printf("- Digite o ano de início da tarefa: ");
     scanf("%d", &ano);
 
     do{
-        printf("--> Digite a hora de inicio da tarefa: ");
+        printf("--> Digite a hora de início da tarefa: ");
         scanf("%d", &hora);
 
         if(hora < 0 || hora > 23){
-            printf("\nValor de Hora Invalido! ");
-            system("pause");
+            printf("\nValor de hora inválido! ");
             printf("\n");
         }
 
@@ -200,19 +194,18 @@ task * adiciona_Tarefa_Main(task *l){
 
     do
     {
-        printf("--> Digite o minuto de inicio da tarefa: ");
+        printf("--> Digite o minuto de início da tarefa: ");
         scanf("%d", &min);
 
         if(min < 0 || min > 59){
-            printf("\nValor de Minuto Invalido! ");
-            system("pause");
+            printf("\nValor de minuto inválido! ");
             printf("\n");
         }
     } while (min < 0 || min > 59);
 
-    printf("\nDURACAO DA TAREFA:\n\n");
+    printf("\nDURAÇÃO DA TAREFA:\n\n");
 
-    printf("\n- Digite a quantidade estimada da duracao da tarefa: ");
+    printf("\n- Digite a quantidade estimada da duração da tarefa em: ");
     printf("\n-> Horas: ");
     scanf("%d", &dur_hora);
     printf("-> Minutos: ");
@@ -220,13 +213,12 @@ task * adiciona_Tarefa_Main(task *l){
     printf("\n");
 
     do{
-        printf("- Esta e uma tarefa longa (que pode demorar dias, meses e/ou anos)? S/N: ");
+        printf("- Esta é uma tarefa longa (que pode demorar dias, meses e/ou anos)? S/N: ");
         fflush(stdin);
         tarefa_longa = getchar();
 
         if(tarefa_longa != 's' && tarefa_longa != 'S' && tarefa_longa != 'n' && tarefa_longa != 'N'){
-            printf("\nOpcao Invalida, tente novamente! ");
-            system("pause");
+            printf("\nOpcao inválida, tente novamente! ");
             printf("\n");
         }
 
@@ -272,37 +264,35 @@ task * edita_Dados_Main(task * t){
 task * edita_Deadline_Main(task * t){
     int d, m, a, hor, min;
 
-    printf("\nDigite o novo dia de inicio da tarefa: ");
+    printf("\nDigite o novo dia de início da tarefa: ");
     scanf("%d", &d);
-    printf("Digite o novo mes de inicio da tarefa: ");
+    printf("Digite o novo mês de início da tarefa: ");
     scanf("%d", &m);
-    printf("Digite o novo ano de inicio da tarefa: ");
+    printf("Digite o novo ano de início da tarefa: ");
     scanf("%d", &a);
-    printf("Digite a nova hora de inicio da tarefa: ");
+    printf("Digite a nova hora de início da tarefa: ");
     scanf("%d", &hor);
-    printf("Digite o novo minuto de inicio da tarefa: ");
+    printf("Digite o novo minuto de início da tarefa: ");
     scanf("%d", &min);
 
     return edita_Deadline(t, d, m, a, hor, min);
-
 }
 
 task * edita_Duracao_Main(task * t){
     int d, m, a, hor, min;
 
-    printf("Digite o novo tempo em horas da duracao da tarefa: ");
+    printf("Digite o novo tempo em horas da duração da tarefa: ");
     scanf("%d", &hor);
-    printf("Digite o novo tempo em minutos da duracao da tarefa: ");
+    printf("Digite o novo tempo em minutos da duração da tarefa: ");
     scanf("%d", &min);
-    printf("\nDigite o novo tempo em dias da duracao da tarefa: ");
+    printf("\nDigite o novo tempo em dias da duração da tarefa: ");
     scanf("%d", &d);
-    printf("Digite o novo tempo em meses da duracao da tarefa: ");
+    printf("Digite o novo tempo em meses da duração da tarefa: ");
     scanf("%d", &m);
-    printf("Digite o novo tempo em anos da duracao da tarefa: ");
+    printf("Digite o novo tempo em anos da duração da tarefa: ");
     scanf("%d", &a);
 
     return edita_Duracao(t, d, m, a, hor, min);
-
 }
 
 //Função para imprimir todas as tarefas
@@ -321,7 +311,7 @@ void mostra_Tarefas(task* l){
             printf("Tarefa de ID %d:\n", p->ID);
             printf("-> Tarefa: %s\n", p->dados->nome);
             printf("-> Prioridade: %d\n", p->dados->prioridade);
-            printf("-> Duracao: %d hora(s) e %d minuto(s)", durac->hora, durac->minuto);
+            printf("-> Duração: %d hora(s) e %d minuto(s)", durac->hora, durac->minuto);
             
             if(durac->dia > 0){
                 printf(", %d dia(s)", durac->dia);
@@ -335,7 +325,7 @@ void mostra_Tarefas(task* l){
                 printf(", %d ano(s)", durac->ano);
             }
 
-            printf("\n-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
+            printf("\n-> Deadline: %d/%d/%d, às %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
             printf("\n===================================================================\n");
             p = p->prox;
         }
@@ -352,7 +342,7 @@ void imprime_Unica_Tarefa(task *t){
     printf("Tarefa de ID %d:\n", t->ID);
     printf("-> Tarefa: %s\n", t->dados->nome);
     printf("-> Prioridade: %d\n", t->dados->prioridade);
-    printf("-> Duracao: %d hora(s) e %d minuto(s)\n", durac->hora, durac->minuto);
+    printf("-> Duração: %d hora(s) e %d minuto(s)\n", durac->hora, durac->minuto);
             
     if(durac->dia > 0){
         printf(", %d dia(s)", durac->dia);
@@ -366,7 +356,7 @@ void imprime_Unica_Tarefa(task *t){
         printf(", %d ano(s)", durac->ano);
     }
 
-    printf("\n-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
+    printf("\n-> Deadline: %d/%d/%d, às %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
     printf("\n===================================================================\n");
 }
 
@@ -378,7 +368,7 @@ void mostra_Menu(){
         ano_hoje = atual.tm_year + 1900;
     
 
-    system("cls");
+    system("clear");
     printf("|------------------------------------|\n");
     printf("|         CADASTRO DE TAREFAS        |\n");
     printf("|------------------------------------|\n");
@@ -396,7 +386,7 @@ void mostra_Menu(){
 
     printf("|\n");
     printf("|____________________________________|\n");
-    printf("|           MENU DE OPCOES           |\n");
+    printf("|           MENU DE OPÇÕES           |\n");
     printf("|------------------------------------|\n");
     printf("| 1 - INSERIR NOVA TAREFA            |\n");
     printf("| 2 - VISUALIZAR TAREFAS CADASTRADAS |\n");
@@ -405,8 +395,6 @@ void mostra_Menu(){
     printf("| 5 - INDICAR A TAREFA DO MOMENTO    |\n");
     printf("| 0 - SAIR                           |\n");
     printf("|------------------------------------|\n");
-    printf("\néáíóúãõâêîôûç\n\n");
     printf("\n");
-    printf("Selecione uma opcao: ");
-    
+    printf("Selecione uma das opções: ");
 }
