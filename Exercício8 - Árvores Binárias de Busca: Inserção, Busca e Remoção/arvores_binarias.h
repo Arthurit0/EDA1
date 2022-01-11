@@ -14,3 +14,6 @@ nodo * busca(arvore r, int k);
 nodo * cria_nodo(int chave, int conteudo);
 nodo *busca_remove(arvore r, int chave);
 nodo *remove_nodo(nodo *q);
+int alturaABB(arvore a);
+int profundidadeABB(arvore a, nodo *q);
+int estaEmAVL(arvore a);

@@ -73,28 +73,49 @@ nodo *remove_nodo(nodo *q){
         p = f;
         f = f->esq;
     }
-
-    //f está apontando para o sucesso e p para o pai do sucessor
-
-    p->esq = f->dir; //Sucessor tem filho(s)
-
-    // Agora o filho assume o lugar do pai
-    f->dir = q->dir;
-    f->esq = q->esq;
-
-    /*Alternativamente, começando da linha 78:
+    
+    // p está apontando para o pai do sucessor
+    // f está apontando para o sucessor
 
     if(p != q){
         p->esq = f->dir;
-        f->dir = q;
+        f->dir = q->dir;
     }
-
-    //Agora o filho assume o lugar do pai
+    // Agora o filho assume o lugar do pai
 
     f->esq = q->esq;
-    */
-
     free(q);
     return(f);
 
+}
+
+int alturaABB(arvore a){
+    if(a == NULL) return -1;
+    int esq, dir;
+    esq = alturaABB(a->esq);
+    dir = alturaABB(a->dir);
+    return (esq > dir ? 1+esq : 1+dir); 
+    // if(esq > dir) return (1+esq);
+    // else return (1+dir);
+}
+
+int profundidadeABB(arvore a, nodo *q){
+    nodo *p = a;
+    int cont = 0;
+    while(p->chave != q->chave && p != NULL){
+        if(q->chave > p->chave) p = p->dir;
+        else p = p->esq;
+        cont++;
+    }
+
+    if(p == NULL) return -1;
+    return cont;
+}
+
+int estaEmAVL(arvore a){
+    if(abs(altura(a->esq) - altura(a->dir)) <= 1 && estaEmAVL(a->esq) && estaEmAVL(a->dir)){
+        return 1;
+    }
+
+    return 0;
 }
