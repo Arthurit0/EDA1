@@ -29,8 +29,8 @@ tmp * cria_Tempo(int d, int m, int a, int h, int min){
 }
 
 /*
-    @Param: Um array de char com o nome da Task, um inteiro de valor de prioridade, e dois ponteiros
-            de "Tempo" relacionados à data limite e a duração da task, respectivamente.
+    @Param: Um array de char com o nome da tarefa, um inteiro de valor de prioridade, e dois ponteiros
+            de "Tempo" relacionados à data limite e a duração da tarefa, respectivamente.
 
     @Return: Um ponteiro para a estrutura "DadosTask"
 
@@ -51,9 +51,9 @@ reg * cria_Dados(char nm[], int prior, tmp* temp, tmp *durac){
 }
 /*
     @Param: Um ponteiro para o início de uma lista de "task", um ponteiro para "reg" com os dados
-            da task, e um inteiro que será usado como o ID da task.
+            da tarefa, e um inteiro que será usado como o ID da tarefa.
 
-    @Return: A mesma lista de "task" passada como parâmetro, mas com a nova task encadeada como último elemento
+    @Return: A mesma lista de "task" passada como parâmetro, mas com a nova tarefa encadeada como último elemento
 
     Cria e aloca uma nova tarefa, atribuindo os "DadosTask" como parâmetro, e a insere no final da lista de Tarefas
 */
@@ -77,6 +77,14 @@ task * adiciona_nova_Tarefa(task *l, reg *dads, int ident){
 
     return l;
 }
+
+/*
+    @Param: Um ponteiro para o início de uma lista de "task", e uma nova tarefa ainda não encadeada nesta lista.
+
+    @Return: A lista de "task" passada como parâmetro, mas com a tarefa passada como segundo parâmetro encadeada como último elemento.
+
+    Adiciona a tarefa passada no segundo parâmetro para a lista de task do primeiro parâmetro, encadeando-a no final desta lista.
+*/
 task * adiciona_final(task *l, task *t){
     task *p;
 
@@ -94,9 +102,9 @@ task * adiciona_final(task *l, task *t){
 }
 
 /*
-    @Param: Um ponteiro para o início de uma lista de "task", e um inteiro que é o ID de uma "task"
+    @Param: Um ponteiro para o início de uma lista de "task", e um inteiro que é o ID de uma tarefa
 
-    @Return: A lista de "task" sem a "task" com o ID passado como parâmetro
+    @Return: A lista de "task" sem a tarefa com o ID passado como parâmetro
 
     Exclui da lista de tarefas a tarefa que possui o ID passado como parâmetro
 */
@@ -104,7 +112,6 @@ task * excluir_Tarefa(task *l, int ident){
     task *p, *ant;
 
     if(l == NULL){ //Se não há nenhuma tarefa, retorna a própria lista
-        printf("Não há nenhuma tarefa! ");    
         return l;
     }
 
@@ -135,9 +142,9 @@ task * excluir_Tarefa(task *l, int ident){
 }
 
 /*
-    @Param: Um ponteiro para o início de uma lista de "task", e um inteiro que é o ID de uma task
+    @Param: Um ponteiro para o início de uma lista de "task", e um inteiro que é o ID de uma tarefa
 
-    @Return: Um ponteiro para a task com o ID passado como parâmetro
+    @Return: Um ponteiro para a tarefa com o ID passado como parâmetro
 
     Busca uma tarefa com o ID passado como parâmetro, e devolve um ponteiro para esta tarefa
 */
@@ -159,12 +166,12 @@ task * busca_Tarefa(task *l, int ident){
 }
 
 /*
-    @Param: Um ponteiro para uma task, um array de char, que será o novo nome da tarefa, e um valor inteiro, que será o
+    @Param: Um ponteiro para uma tarefa, um array de char, que será o novo nome da tarefa, e um valor inteiro, que será o
             indicador de prioridade da tarefa.
     
-    @Return: O ponteiro da task passado como parâmetro, mas com os atributos de nome e prioridade alterados.
+    @Return: O ponteiro da tarefa passado como parâmetro, mas com os dados de nome e prioridade alterados.
 
-    Recebe uma task e altera seus dados de nome e prioridade para os que foram passados como parâmetros da função
+    Recebe uma tarefa e altera seus dados de nome e prioridade para os que foram passados como parâmetros da função
 */
 
 task * edita_Dados(task * t, char editaNome[80], int prior){
@@ -175,12 +182,12 @@ task * edita_Dados(task * t, char editaNome[80], int prior){
 }
 
 /*
-    @Param: Um ponteiro para uma task, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da Deadline da task,
+    @Param: Um ponteiro para uma tarefa, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da Deadline da tarefa,
             respectivamente.
 
-    @Return: O ponteiro da task passado como parâmetro, mas com a Deadline alterada
+    @Return: O ponteiro da tarefa passado como parâmetro, mas com a Deadline alterada
 
-    Recebe uma task e altera os dados da estrutura da Deadline para os que foram passados como parâmetros da função
+    Recebe uma tarefa e altera os dados da estrutura da Deadline para os que foram passados como parâmetros da função
 */
 task * edita_Deadline(task *t, int d, int m, int a, int h, int min){
     tmp * edit_temp;
@@ -196,12 +203,12 @@ task * edita_Deadline(task *t, int d, int m, int a, int h, int min){
 }
 
 /*
-    @Param: Um ponteiro para uma task, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da duração da task,
+    @Param: Um ponteiro para uma tarefa, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da duração da tarefa,
             respectivamente.
 
-    @Return: O ponteiro da task passado como parâmetro, mas com a duração alterada
+    @Return: O ponteiro da tarefa passado como parâmetro, mas com a duração alterada
 
-    Recebe uma task e altera os dados da estrutura da Duração para os que foram passados como parâmetros da função
+    Recebe uma tarefa e altera os dados da estrutura da Duração para os que foram passados como parâmetros da função
 */
 task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
     tmp * edit_temp;
@@ -269,7 +276,14 @@ int verif_calendario(int mes, int ano){
             return -1;
     }
 }
+/*
+    @Param: Dois ponteiros para estruturas "Tempo", a primeira sendo a data de início de uma tarefa, e a outra a duração
 
+    @Return: Uma estrutura "Tempo", sendo a data final, somando data inicial + duração.
+
+    Função para retornar a data de conclusão de uma tarefa baseada em sua data inicial e duração. Serve para o encadeamento da lista de tarefas
+    recomendadas da opção 5 do menu, para que nenhuma tarefa sobreponha a data de início da outra desta lista.
+*/
 
 tmp * data_final (tmp *deadline, tmp *duracao){
     tmp * tmpfinal;
@@ -400,7 +414,7 @@ task * merge(task *e, task *d){
 
     while((e != NULL) && (d != NULL)){
 
-        if(data_anterior_a(e, d) == 1){ //(e->dado) < (d->dado)
+        if(data_anterior_a(e, d)/* == 1*/){ //(e->dado) < (d->dado)
             l = adiciona_final(l, e);
             p = e;
             e = e->prox;

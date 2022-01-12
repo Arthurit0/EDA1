@@ -11,10 +11,9 @@ task * adiciona_Tarefa_Main(task *l);
 task * edita_Dados_Main(task * t);
 task * edita_Deadline_Main(task * t);
 task * edita_Duracao_Main(task * t);
+int ID; //Variável global para cada tarefa ter um número inteiro "ID" única.
 
-int ID;
-
-int main(){
+int Main(){
     setlocale(LC_ALL,"pt-br");
     task *l = NULL, *edTarefa;
     int op = 0, op2, rmvID, edID;
@@ -125,6 +124,14 @@ int main(){
     return 0;
 }
 
+/*
+    @Param: Um ponteiro para uma lista de tasks.
+    
+    @Return: O mesmo ponteiro para a lista de tasks, mas com uma nova tarefa adicionada.
+    
+    Aqui é onde todas os dados da nova tarefa são criados com o conteúdo digitado pelo usuário, para então ser enviada
+    para a função "adiciona_nova_Tarefa", onde a tarefa será encadeada na lista de tasks.
+*/
 task * adiciona_Tarefa_Main(task *l){
     tmp * tempofinal;
 
@@ -313,6 +320,14 @@ task * adiciona_Tarefa_Main(task *l){
     return l;
 }
 
+/*
+    @Param: Um ponteiro para uma lista de tasks.
+    
+    @Return: O mesmo ponteiro para a lista de tasks, com uma tarefa tendo o nome e prioridade alterados.
+    
+    Aqui é onde o novo nome e prioridade são digitados pelo usuário, para então serem enviados para a função "edita_Dados" em
+    tasks.c, que é onde a substituição dos dados desta task acontecem.
+*/
 task * edita_Dados_Main(task * t){
     char editaNome[80];
     int prior;
@@ -328,6 +343,14 @@ task * edita_Dados_Main(task * t){
     return edita_Dados(t, editaNome, prior);
 }
 
+/*
+    @Param: Um ponteiro para uma lista de tasks.
+    
+    @Return: O mesmo ponteiro para a lista de tasks, com uma tarefa tendo a estrutura de "Tempo" Deadline alterada.
+    
+    Aqui é onde os novos valores da deadline são digitados pelo usuário, para então serem enviados para a função "edita_Deadline" em
+    "tasks.c", que é onde a substituição dos dados desta task acontecem.
+*/
 task * edita_Deadline_Main(task * t){
     int d, m, a, hor, min;
 
@@ -346,7 +369,14 @@ task * edita_Deadline_Main(task * t){
 
     return edita_Deadline(t, d, m, a, hor, min);
 }
-
+/*
+    @Param: Um ponteiro para uma lista de tasks.
+    
+    @Return: O mesmo ponteiro para a lista de tasks, com uma tarefa tendo a estrutura de "Tempo" Duracao alterada.
+    
+    Aqui é onde os novos valores da duração são digitados pelo usuário, para então serem enviados para a função "edita_Duracao" em
+    "tasks.c", que é onde a substituição dos dados desta task acontecem.
+*/
 task * edita_Duracao_Main(task * t){
     int d, m, a, hor, min;
     tmp *dur = t->dados->deadline;
@@ -377,7 +407,11 @@ task * edita_Duracao_Main(task * t){
     return edita_Duracao(t, d, m, a, hor, min);
 }
 
-//Função para imprimir todas as tarefas
+/*
+    @Param: Um ponteiro para o início de uma LSE de tasks.
+
+    Função para imprimir uma lista de tasks.
+*/
 void mostra_Tarefas(task* l){
     task *p; tmp *ddline; tmp *durac;
 
@@ -387,7 +421,7 @@ void mostra_Tarefas(task* l){
         p = l;
         
         while(p != NULL){
-            ddline = p->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão
+            ddline = p->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão.
             durac = p->dados->duracao;
             printf("\n==================================================================\n");
             printf("Tarefa de ID %d:\n", p->ID);
@@ -414,11 +448,15 @@ void mostra_Tarefas(task* l){
         printf("\n");
     }
 }
+/*
+    @Param: Um ponteiro para uma task.
 
+    Função para imprimir todos os dados de uma task.
+*/
 void imprime_Unica_Tarefa(task *t){
     tmp *ddline; tmp *durac;
 
-    ddline = t->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão
+    ddline = t->dados->deadline; //Crio ponteiros de "Tempo" e "Duracao" para facilitar na impressão.
     durac = t->dados->duracao;
     printf("\n==================================================================\n");
     printf("Tarefa de ID %d:\n", t->ID);
@@ -442,6 +480,9 @@ void imprime_Unica_Tarefa(task *t){
     printf("\n===================================================================\n");
 }
 
+/*
+    Menu de opções para o usuário, impresso em "int Main()"
+*/
 void mostra_Menu(){
     time_t t = time(NULL);
     struct tm atual = *localtime(&t);
@@ -456,19 +497,7 @@ void mostra_Menu(){
     printf("|------------------------------------|\n");
     printf("|         CADASTRO DE TAREFAS        |\n");
     printf("|------------------------------------|\n");
-
-    // printf("|            ");
-    // if(dia_hoje < 10){
-    //     printf(" ");
-    // }
-
-    // printf("(%d/%d/%d)            ", dia_hoje, mes_hoje, ano_hoje);
-
-    // if(mes_hoje < 10){
-    //     printf(" ");
-    // }
-
-    
+   
     printf("|            (");
     
     if(dia_hoje < 10){
@@ -483,9 +512,6 @@ void mostra_Menu(){
 
     printf("%d/%d)            ", mes_hoje, ano_hoje);
     printf("|\n");
-
-
-    // printf("|               %d:%d                |\n", hora_hoje, minuto_hoje);
 
     printf("|               ");
 
