@@ -57,7 +57,7 @@ reg * cria_Dados(char nm[], int prior, tmp* temp, tmp *durac){
 
     Cria e aloca uma nova tarefa, atribuindo os "DadosTask" como parâmetro, e a insere no final da lista de Tarefas
 */
-task * adiciona_nova_Tarefa(task *l, reg *dads, int ident){
+task * adiciona_Tarefa(task *l, reg *dads, int ident){
     task *novo, *p;
 
     novo = (task *)malloc(sizeof(task)); //Aloca a nova tarefa e atribui os dados do parâmetro da função
@@ -74,21 +74,6 @@ task * adiciona_nova_Tarefa(task *l, reg *dads, int ident){
     }
 
     p->prox = novo; //Faz o próximo do último da lista ser o novo elemento
-
-    return l;
-}
-task * adiciona_final(task *l, task *t){
-    task *p;
-
-    if(l == NULL) return t; //Se a lista de tarefas for vazia, devolve a nova tarefa com os dados como cabeça da lista
-
-    p = l;
-
-    while(p->prox != NULL){ //Vai até o último elemento da lista
-        p = p->prox;
-    }
-
-    p->prox = t; //Faz o próximo do último da lista ser o novo elemento
 
     return l;
 }
