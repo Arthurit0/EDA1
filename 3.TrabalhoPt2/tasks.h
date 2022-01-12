@@ -29,7 +29,7 @@ tmp * cria_Tempo(int d, int m, int a, int h, int min);
 reg * cria_Dados(char nm[], int prior, tmp* temp, tmp *durac);
 
 //Manipular estruturas do tipo task
-task * adiciona_Tarefa(task *l, reg *dads, int ident);
+task * adiciona_nova_Tarefa(task *l, reg *dads, int ident);
 task * excluir_Tarefa(task *l, int ident);
 task * busca_Tarefa(task *l, int ident);
 
@@ -38,8 +38,11 @@ task * edita_Dados(task * t, char editaNome[80], int prior);
 task * edita_Deadline(task *t, int d, int m, int a, int h, int min);
 task * edita_Duracao(task *t, int d, int m, int a, int h, int min);
 
+//Verificar data final
 int verif_calendario(int mes, int ano);
 tmp * data_final (tmp *deadline, tmp *duracao);
+
+//Ordenar lista de tarefas por data
 task * mg_sort_tasks(task *l);
 task * split(task *l);
 task * merge(task *e, task *d);
