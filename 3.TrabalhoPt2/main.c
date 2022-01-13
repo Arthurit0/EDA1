@@ -13,7 +13,7 @@ task * edita_Deadline_Main(task * t);
 task * edita_Duracao_Main(task * t);
 int ID; //Variável global para cada tarefa ter um número inteiro "ID" única.
 
-int Main(){
+int main(){
     setlocale(LC_ALL,"pt-br");
     task *l = NULL, *edTarefa;
     int op = 0, op2, rmvID, edID;
@@ -123,7 +123,6 @@ int Main(){
 
     return 0;
 }
-
 /*
     @Param: Um ponteiro para uma lista de tasks.
     
@@ -319,7 +318,6 @@ task * adiciona_Tarefa_Main(task *l){
 
     return l;
 }
-
 /*
     @Param: Um ponteiro para uma lista de tasks.
     
@@ -342,7 +340,6 @@ task * edita_Dados_Main(task * t){
 
     return edita_Dados(t, editaNome, prior);
 }
-
 /*
     @Param: Um ponteiro para uma lista de tasks.
     
@@ -406,7 +403,6 @@ task * edita_Duracao_Main(task * t){
 
     return edita_Duracao(t, d, m, a, hor, min);
 }
-
 /*
     @Param: Um ponteiro para o início de uma LSE de tasks.
 
@@ -462,8 +458,22 @@ void imprime_Unica_Tarefa(task *t){
     printf("Tarefa de ID %d:\n", t->ID);
     printf("-> Tarefa: %s\n", t->dados->nome);
     printf("-> Prioridade: %d\n", t->dados->prioridade);
-    printf("-> Duracao: %d hora(s) e %d minuto(s)\n", durac->hora, durac->minuto);
+    //printf("-> Duracao: %d hora(s) e %d minuto(s)\n", durac->hora, durac->minuto);
             
+    printf("-> Duracao: ");
+
+    if((durac->hora) < 10){
+        printf("0");
+    }
+
+    printf("%d hora(s) e ", durac->hora);
+
+    if((durac->minuto) < 10){
+        printf("0");
+    }
+
+    printf("%d minuto(s)\n", durac->minuto);
+
     if(durac->dia > 0){
         printf(", %d dia(s)", durac->dia);
     }
@@ -479,7 +489,6 @@ void imprime_Unica_Tarefa(task *t){
     printf("\n-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
     printf("\n===================================================================\n");
 }
-
 /*
     Menu de opções para o usuário, impresso em "int Main()"
 */

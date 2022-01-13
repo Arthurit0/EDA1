@@ -27,7 +27,6 @@ tmp * cria_Tempo(int d, int m, int a, int h, int min){
 
     return novo;
 }
-
 /*
     @Param: Um array de char com o nome da tarefa, um inteiro de valor de prioridade, e dois ponteiros
             de "Tempo" relacionados à data limite e a duração da tarefa, respectivamente.
@@ -77,7 +76,6 @@ task * adiciona_nova_Tarefa(task *l, reg *dads, int ident){
 
     return l;
 }
-
 /*
     @Param: Um ponteiro para o início de uma lista de "task", e uma nova tarefa ainda não encadeada nesta lista.
 
@@ -100,7 +98,6 @@ task * adiciona_final(task *l, task *t){
 
     return l;
 }
-
 /*
     @Param: Um ponteiro para o início de uma lista de "task", e um inteiro que é o ID de uma tarefa
 
@@ -140,7 +137,6 @@ task * excluir_Tarefa(task *l, int ident){
 
     return l;
 }
-
 /*
     @Param: Um ponteiro para o início de uma lista de "task", e um inteiro que é o ID de uma tarefa
 
@@ -164,7 +160,6 @@ task * busca_Tarefa(task *l, int ident){
         return p;
     }
 }
-
 /*
     @Param: Um ponteiro para uma tarefa, um array de char, que será o novo nome da tarefa, e um valor inteiro, que será o
             indicador de prioridade da tarefa.
@@ -173,14 +168,12 @@ task * busca_Tarefa(task *l, int ident){
 
     Recebe uma tarefa e altera seus dados de nome e prioridade para os que foram passados como parâmetros da função
 */
-
 task * edita_Dados(task * t, char editaNome[80], int prior){
     strcpy((t->dados->nome), editaNome);
     t->dados->prioridade = prior;
 
     return t;
 }
-
 /*
     @Param: Um ponteiro para uma tarefa, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da Deadline da tarefa,
             respectivamente.
@@ -201,7 +194,6 @@ task * edita_Deadline(task *t, int d, int m, int a, int h, int min){
 
     return t;
 }
-
 /*
     @Param: Um ponteiro para uma tarefa, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da duração da tarefa,
             respectivamente.
@@ -222,7 +214,6 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
 
     return t;
 }
-
 /*
 
     @Param: Dois valores inteiros representando um mês e ano
@@ -284,7 +275,6 @@ int verif_calendario(int mes, int ano){
     Função para retornar a data de conclusão de uma tarefa baseada em sua data inicial e duração. Serve para o encadeamento da lista de tarefas
     recomendadas da opção 5 do menu, para que nenhuma tarefa sobreponha a data de início da outra desta lista.
 */
-
 tmp * data_final (tmp *deadline, tmp *duracao){
     tmp * tmpfinal;
     int d, m, a, h, min, dias_do_mes;
@@ -414,7 +404,7 @@ task * merge(task *e, task *d){
 
     while((e != NULL) && (d != NULL)){
 
-        if(data_anterior_a(e, d)/* == 1*/){ //(e->dado) < (d->dado)
+        if(data_anterior_a(e, d) == 1){ //(e->dado) < (d->dado)
             l = adiciona_final(l, e);
             p = e;
             e = e->prox;
@@ -444,55 +434,55 @@ task * merge(task *e, task *d){
         return l;
 }
 
-int data_anterior_a(task *a, task *d){
-    tmp *ant, *dep;
+int data_anterior_a(task *e, task *d){
+    tmp *esq, *dir;
 
-    ant = a->dados->deadline;
-    dep = a->dados->deadline;
+    esq = e->dados->deadline;
+    dir = d->dados->deadline;
 
-    if(ant->ano < dep->ano){
+    if(esq->ano < dir->ano){
         return 1;
-    }else if(ant->ano > dep->ano){
+    }else if(esq->ano > dir->ano){
         return 0;
     }
 
     //Se chegou aqui, ambas são no mesmo ano
 
-    if(ant->mes < dep->mes){
+    if(esq->mes < dir->mes){
         return 1;
-    }else if(ant->mes > dep->mes){
+    }else if(esq->mes > dir->mes){
         return 0;
     }
 
     //Se chegou aqui, mesmo mês
 
-    if(ant->dia < dep->dia){
+    if(esq->dia < dir->dia){
         return 1;
-    }else if(ant->dia > dep->dia){
+    }else if(esq->dia > dir->dia){
         return 0;
     }
 
     //Mesmo dia
 
-    if(ant->hora < dep->hora){
+    if(esq->hora < dir->hora){
         return 1;
-    }else if(ant->hora > dep->hora){
+    }else if(esq->hora > dir->hora){
         return 0;
     }
 
     //Mesma hora
 
-    if(ant->minuto < dep->minuto){
+    if(esq->minuto < dir->minuto){
         return 1;
-    }else if(ant->minuto > dep->minuto){
+    }else if(esq->minuto > dir->minuto){
         return 0;
     }
 
     //Mesmo minuto
 
-    if(a->dados->prioridade > d->dados->prioridade){
+    if(e->dados->prioridade > d->dados->prioridade){
         return 1;
-    }else if(a->dados->prioridade < d->dados->prioridade){
+    }else if(e->dados->prioridade < d->dados->prioridade){
         return 0;
     }
 
