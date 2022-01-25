@@ -126,7 +126,14 @@ int main(){
 
     return 0;
 }
-
+/*
+    @Param: Um ponteiro para uma lista de tasks.
+    
+    @Return: O mesmo ponteiro para a lista de tasks, mas com uma nova tarefa adicionada.
+    
+    Aqui é onde todas os dados da nova tarefa são criados com o conteúdo digitado pelo usuário, para então ser enviada
+    para a função "adiciona_nova_Tarefa", onde a tarefa será encadeada na lista de tasks.
+*/
 task * adiciona_Tarefa_Main(task *l){
     tmp * tempofinal;
 
@@ -335,7 +342,14 @@ task * edita_Dados_Main(task * t){
 
     return edita_Dados(t, editaNome, prior);
 }
-
+/*
+    @Param: Um ponteiro para uma lista de tasks.
+    
+    @Return: O mesmo ponteiro para a lista de tasks, com uma tarefa tendo a estrutura de "Tempo" Deadline alterada.
+    
+    Aqui é onde os novos valores da deadline são digitados pelo usuário, para então serem enviados para a função "edita_Deadline" em
+    "tasks.c", que é onde a substituição dos dados desta task acontecem.
+*/
 task * edita_Deadline_Main(task * t){
     int d, m, a, hor, min;
 
@@ -352,7 +366,14 @@ task * edita_Deadline_Main(task * t){
 
     return edita_Deadline(t, d, m, a, hor, min);
 }
-
+/*
+    @Param: Um ponteiro para uma lista de tasks.
+    
+    @Return: O mesmo ponteiro para a lista de tasks, com uma tarefa tendo a estrutura de "Tempo" Duracao alterada.
+    
+    Aqui é onde os novos valores da duração são digitados pelo usuário, para então serem enviados para a função "edita_Duracao" em
+    "tasks.c", que é onde a substituição dos dados desta task acontecem.
+*/
 task * edita_Duracao_Main(task * t){
     int d, m, a, hor, min;
 
@@ -407,7 +428,11 @@ void mostra_Tarefas(task* l){
         printf("\n");
     }
 }
+/*
+    @Param: Um ponteiro para uma task.
 
+    Função para imprimir todos os dados de uma task.
+*/
 void imprime_Unica_Tarefa(task *t){
     tmp *ddline; tmp *durac;
 
