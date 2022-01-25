@@ -315,7 +315,14 @@ task * adiciona_Tarefa_Main(task *l){
 
     return l;
 }
-
+/*
+    @Param: Um ponteiro para uma lista de tasks.
+    
+    @Return: O mesmo ponteiro para a lista de tasks, com uma tarefa tendo o nome e prioridade alterados.
+    
+    Aqui é onde o novo nome e prioridade são digitados pelo usuário, para então serem enviados para a função "edita_Dados" em
+    tasks.c, que é onde a substituição dos dados desta task acontecem.
+*/
 task * edita_Dados_Main(task * t){
     char editaNome[80];
     int prior;
