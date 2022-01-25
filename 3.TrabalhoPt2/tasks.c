@@ -27,7 +27,6 @@ tmp * cria_Tempo(int d, int m, int a, int h, int min){
 
     return novo;
 }
-
 /*
     @Param: Um array de char com o nome da Task, um inteiro de valor de prioridade, e dois ponteiros
             de "Tempo" relacionados à data limite e a duração da task, respectivamente.
@@ -77,6 +76,7 @@ task * adiciona_nova_Tarefa(task *l, reg *dads, int ident){
 
     return l;
 }
+
 task * adiciona_final(task *l, task *t){
     task *p;
 
@@ -92,7 +92,6 @@ task * adiciona_final(task *l, task *t){
 
     return l;
 }
-
 /*
     @Param: Um ponteiro para o início de uma lista de "task", e um inteiro que é o ID de uma "task"
 
@@ -157,7 +156,6 @@ task * busca_Tarefa(task *l, int ident){
         return p;
     }
 }
-
 /*
     @Param: Um ponteiro para uma task, um array de char, que será o novo nome da tarefa, e um valor inteiro, que será o
             indicador de prioridade da tarefa.
@@ -166,14 +164,12 @@ task * busca_Tarefa(task *l, int ident){
 
     Recebe uma task e altera seus dados de nome e prioridade para os que foram passados como parâmetros da função
 */
-
 task * edita_Dados(task * t, char editaNome[80], int prior){
     strcpy((t->dados->nome), editaNome);
     t->dados->prioridade = prior;
 
     return t;
 }
-
 /*
     @Param: Um ponteiro para uma task, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da Deadline da task,
             respectivamente.
@@ -194,7 +190,6 @@ task * edita_Deadline(task *t, int d, int m, int a, int h, int min){
 
     return t;
 }
-
 /*
     @Param: Um ponteiro para uma task, e 5 valores inteiros, relacionados ao dia, mês, ano, hora e minuto da duração da task,
             respectivamente.
@@ -215,7 +210,6 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
 
     return t;
 }
-
 /*
 
     @Param: Dois valores inteiros representando um mês e ano
@@ -269,7 +263,6 @@ int verif_calendario(int mes, int ano){
             return -1;
     }
 }
-
 
 tmp * data_final (tmp *deadline, tmp *duracao){
     tmp * tmpfinal;
