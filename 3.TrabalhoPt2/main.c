@@ -121,6 +121,8 @@ int main(){
                 printf("\nOpção inválida, tente novamente! ");
                 break;
         }
+        printf("\n\n");
+        system_pause();
         system("clear");
     }while(op != 0);
 
@@ -318,7 +320,6 @@ task * adiciona_Tarefa_Main(task *l){
     tempofinal = data_final(tempo, duracao);
 
     printf("\nTarefa adicionada na sua lista de tarefas! ");
-    system_pause();
 
     return l;
 }
@@ -425,7 +426,6 @@ void mostra_Tarefas(task* l){
             printf("\n===================================================================\n");
             p = p->prox;
         }
-        printf("\n");
     }
 }
 /*
