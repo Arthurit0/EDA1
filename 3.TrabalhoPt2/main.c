@@ -501,7 +501,6 @@ void mostra_Menu(){
         hora_hoje = atual.tm_hour,
         minuto_hoje = atual.tm_min;
     
-
     system("cls");
     printf("|------------------------------------|\n");
     printf("|         CADASTRO DE TAREFAS        |\n");
