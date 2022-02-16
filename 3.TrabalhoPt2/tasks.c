@@ -406,29 +406,29 @@ task * merge(task *e, task *d){
 
         if(data_anterior_a(e, d) == 1){ //(e->dado) < (d->dado)
             l = adiciona_final(l, e);
-            p = e;
+            // p = e;
             e = e->prox;
-            free(p);
+            // free(p);
         }else{
             l = adiciona_final(l, d);
-            p = d;
+            // p = d;
             d = d->prox;
-            free(p);
+            // free(p);
         }
     }
 
         while(d != NULL){
             l = adiciona_final(l, d);
-            p = d;
+            // p = d;
             d = d->prox;
-            free(p);
+            // free(p);
         }
 
         while(e != NULL){
             l = adiciona_final(l, e);
-            p = e;
+            // p = e;
             e = e->prox;
-            free(p);
+            // free(p);
         }
 
         return l;
