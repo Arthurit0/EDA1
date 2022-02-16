@@ -20,6 +20,7 @@ typedef struct Tarefa task;
 
 struct Tarefa{
     int ID;
+    int done;
     reg *dados;
     task *prox;
 };

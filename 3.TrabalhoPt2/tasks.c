@@ -60,6 +60,7 @@ task * adiciona_nova_Tarefa(task *l, reg *dads, int ident){
     task *novo, *p;
 
     novo = (task *)malloc(sizeof(task)); //Aloca a nova tarefa e atribui os dados do parâmetro da função
+    novo->done = 0;
     novo->ID = ident;
     novo->dados = dads;
     novo->prox = NULL;
@@ -214,6 +215,13 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
 
     return t;
 }
+
+task * conclui_Tarefa(task *t){
+    t->done = 1;
+    return t;
+}
+
+
 /*
 
     @Param: Dois valores inteiros representando um mês e ano

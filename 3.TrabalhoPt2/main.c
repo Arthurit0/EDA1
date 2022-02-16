@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
-#include "tasks.c"
+#include "tasks.h"
 
 void mostra_Tarefas(task* l);
 void imprime_Unica_Tarefa(task *t);
@@ -109,6 +109,10 @@ int main(){
                 }
                 system("pause");
 
+                break;
+
+            case 6:
+                mostra_Tarefas(l);
                 break;
 
             case 0:
@@ -438,6 +442,12 @@ void mostra_Tarefas(task* l){
             }
 
             printf("\n-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
+                printf("\n-> Status: ");
+            if(p->done == 0){
+                printf("Para Fazer");
+            }else{
+                printf("Feito ;)");
+            }
             printf("\n===================================================================\n");
             p = p->prox;
         }
@@ -487,6 +497,12 @@ void imprime_Unica_Tarefa(task *t){
     }
 
     printf("\n-> Deadline: %d/%d/%d, as %d:%d", ddline->dia, ddline->mes, ddline->ano, ddline->hora, ddline->minuto);
+    printf("\n-> Status: ");
+    if(t->done == 0){
+        printf("Para Fazer :| ");
+    }else{
+        printf("Feito ;)");
+    }
     printf("\n===================================================================\n");
 }
 /*
@@ -543,6 +559,7 @@ void mostra_Menu(){
     printf("| 3 - EXCLUIR TAREFA                 |\n");
     printf("| 4 - EDITAR TAREFA                  |\n");
     printf("| 5 - INDICAR A TAREFA DO MOMENTO    |\n");
+    printf("| 6 - CONCLUIR TAREFA                |\n");
     printf("| 0 - SAIR                           |\n");
     printf("|------------------------------------|\n");
     printf("\n");
