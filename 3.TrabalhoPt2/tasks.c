@@ -84,7 +84,7 @@ task * adiciona_nova_Tarefa(task *l, reg *dads, int ident){
 
     Adiciona a tarefa passada no segundo parâmetro para a lista de task do primeiro parâmetro, encadeando-a no final desta lista.
 */
-task * adiciona_final(task *l, task *t){
+task *  adiciona_final(task *l, task *t){
     task *p;
 
     if(l == NULL) return t; //Se a lista de tarefas for vazia, devolve a nova tarefa com os dados como cabeça da lista
@@ -385,7 +385,7 @@ task * mg_sort_tasks(task *l){
 }
 
 task * split(task *l){
-    task *x, *y, *p;
+    task *x, *y, *p, *t;
 
     x=y=l;
 
@@ -407,36 +407,36 @@ task * split(task *l){
 }
 
 task * merge(task *e, task *d){
-    task *l, *p;
+    task *l, *aux;
     l = NULL;
 
     while((e != NULL) && (d != NULL)){
 
         if(data_anterior_a(e, d) == 1){ //(e->dado) < (d->dado)
-            l = adiciona_final(l, e);
-            // p = e;
+            aux = e;
             e = e->prox;
-            // free(p);
+            aux->prox = NULL;
+            l = adiciona_final(l, aux);
         }else{
-            l = adiciona_final(l, d);
-            // p = d;
+            aux = d;
             d = d->prox;
-            // free(p);
+            aux->prox = NULL;
+            l = adiciona_final(l, aux);
         }
     }
 
         while(d != NULL){
-            l = adiciona_final(l, d);
-            // p = d;
+            aux = d;
             d = d->prox;
-            // free(p);
+            aux->prox = NULL;
+            l = adiciona_final(l, aux);
         }
 
         while(e != NULL){
-            l = adiciona_final(l, e);
-            // p = e;
+            aux = e;
             e = e->prox;
-            // free(p);
+            aux->prox = NULL;
+            l = adiciona_final(l, aux);
         }
 
         return l;
