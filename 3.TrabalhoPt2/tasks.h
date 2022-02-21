@@ -35,7 +35,7 @@ task * excluir_Tarefa(task *l, int ident);
 task * busca_Tarefa(task *l, int ident);
 
 //Editar estruturas(criar e substituir)
-task * edita_Dados(task * t, char editaNome[80], int prior);
+task * edita_Dados(task * t, char editaNome[80], int prior, int done);
 task * edita_Deadline(task *t, int d, int m, int a, int h, int min);
 task * edita_Duracao(task *t, int d, int m, int a, int h, int min);
 
@@ -43,8 +43,19 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min);
 int verif_calendario(int mes, int ano);
 tmp * data_final (tmp *deadline, tmp *duracao);
 
-//Ordenar lista de tarefas por data
+//Ordenar lista de tarefas por data inicial
 task * mg_sort_tasks(task *l);
 task * split(task *l);
 task * merge(task *e, task *d);
-int data_anterior_a(task *a, task *d);
+int data_anterior_a(tmp *a, tmp *d);
+
+// Tarefas do momento
+task * compl_task(task *t);
+task * clear_compl_tasks(task *l);
+
+task * mg_sort_tasks_DF(task *l);
+task * merge_DF(task *e, task *d);
+
+task * filter_optm(task *l, task *opt);
+task * rmv_overlapping(task* l, task *t);
+int num_de_ant_DF(task *l, task *t);

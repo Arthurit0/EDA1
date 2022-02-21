@@ -1,10 +1,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <stdio.h>
 #include "tasks.h"
-
-// Formato de documentação
-// http://www.linhadecodigo.com.br/artigo/1089/phpdoc-documentando-bem-seu-codigo.aspx
 
 /*
     @Param: Valores inteiros referentes a dia, mês, ano, hora e minuto, respectivamente
@@ -84,7 +82,7 @@ task * adiciona_nova_Tarefa(task *l, reg *dads, int ident){
 
     Adiciona a tarefa passada no segundo parâmetro para a lista de task do primeiro parâmetro, encadeando-a no final desta lista.
 */
-task *  adiciona_final(task *l, task *t){
+task * adiciona_Tarefa(task *l, task *t){
     task *p;
 
     if(l == NULL) return t; //Se a lista de tarefas for vazia, devolve a nova tarefa com os dados como cabeça da lista
@@ -129,11 +127,11 @@ task * excluir_Tarefa(task *l, int ident){
         }else{ //Está no meio da lista. O anterior a este ponteiro apontará para o próximo deste ponteiro
             ant->prox = p->prox;
         }
-            //Desalocando ponteiros das estruturas internas dos dados, os dados, e por fim o ponteiro de tarefa
-            free(p->dados->duracao);
-            free(p->dados->deadline);
-            free(p->dados);
-            free(p);
+            // //Desalocando ponteiros das estruturas internas dos dados, os dados, e por fim o ponteiro de tarefa
+            // free(p->dados->duracao);
+            // free(p->dados->deadline);
+            // free(p->dados);
+            // free(p);
     }
 
     return l;
@@ -169,7 +167,7 @@ task * busca_Tarefa(task *l, int ident){
 
     Recebe uma tarefa e altera seus dados de nome e prioridade para os que foram passados como parâmetros da função
 */
-task * edita_Dados(task * t, char editaNome[80], int prior){
+task * edita_Dados(task * t, char editaNome[80], int prior, int done){
     strcpy((t->dados->nome), editaNome);
     t->dados->prioridade = prior;
 
@@ -215,15 +213,140 @@ task * edita_Duracao(task *t, int d, int m, int a, int h, int min){
 
     return t;
 }
+/*
+    @Param: Um ponteiro para uma tarefa
 
-task * conclui_Tarefa(task *t){
+    @Return: O mesmo ponteiro para a tarefa, mas com o inteiro done da tarefa setado para 1
+
+    Recebe uma tarefa (de preferência, que tenha valor done == 0) e seta seu valor done para 1, marcando a tarefa como concluída
+*/
+task * compl_task(task *t){
     t->done = 1;
     return t;
 }
+/*
+    @Param: Um ponteiro para o início de uma lista de tarefas
 
+    @Return: Uma lista de tarefas, todas com o parâmetro done igual a 0
+
+    Serve para retornar uma lista em que não haja tarefas já concluidas
+*/
+task * clear_compl_tasks(task *l){
+    task *p, *subst;
+    reg *dados;
+
+    p = l;
+
+    while(p != NULL){
+
+        if(p->done != 1){
+
+            dados = cria_Dados(p->dados->nome, p->dados->prioridade, 
+                cria_Tempo(p->dados->deadline->dia,
+                        p->dados->deadline->mes, 
+                        p->dados->deadline->ano, 
+                        p->dados->deadline->hora, 
+                        p->dados->deadline->minuto),
+
+                cria_Tempo(p->dados->duracao->dia, 
+                        p->dados->duracao->mes, 
+                        p->dados->duracao->ano, 
+                        p->dados->duracao->hora, 
+                        p->dados->duracao->minuto)
+            );
+
+            subst = adiciona_nova_Tarefa(subst, dados, p->ID);
+        }
+
+        p = p->prox;
+    }
+
+    return subst;
+}
+/*
+    @Param: Um ponteiro para o início de uma lista encadeada de tarefas que não estão ordenadas
+
+    @Return: O ponteiro para o início da mesma lista de tarefas, agora ordenadas
+
+    Ordenação Mergesort para a lista de tarefas, baseado na data de início de cada tarefa
+*/
+task * mg_sort_tasks(task *l){
+    task *e, *d, *mid;
+
+    if(l == NULL || l->prox == NULL){
+        return l;
+    }
+
+    mid = split(l);
+    e = mg_sort_tasks(l);
+    d = mg_sort_tasks(mid);
+    l = merge(e,d);
+
+    return l;
+}
+
+task * split(task *l){
+    task *x, *y, *p, *t;
+
+    x=y=l;
+
+    if(l == NULL || l->prox == NULL) return l;
+    
+    while(y->prox != NULL){
+        y = y->prox;
+
+        if(y->prox != NULL){
+            x = x->prox;
+            y = y->prox;
+        }
+    }
+
+    p = x->prox;
+    x->prox = NULL;
+
+    return (p);
+}
+
+task * merge(task *e, task *d){
+    task *l, *aux;
+    tmp *esq, *dir;
+    l = NULL;
+
+    while((e != NULL) && (d != NULL)){
+        esq = e->dados->deadline;
+        dir = d->dados->deadline;
+
+        if(data_anterior_a(esq, dir) == 1){ //(e->dado) < (d->dado)
+            aux = e;
+            e = e->prox;
+            aux->prox = NULL;
+            l = adiciona_Tarefa(l, aux);
+        }else{
+            aux = d;
+            d = d->prox;
+            aux->prox = NULL;
+            l = adiciona_Tarefa(l, aux);
+        }
+    }
+
+        while(d != NULL){
+            aux = d;
+            d = d->prox;
+            aux->prox = NULL;
+            l = adiciona_Tarefa(l, aux);
+        }
+
+        while(e != NULL){
+            aux = e;
+            e = e->prox;
+            aux->prox = NULL;
+            l = adiciona_Tarefa(l, aux);
+        }
+
+        return l;
+}
 
 /*
-
     @Param: Dois valores inteiros representando um mês e ano
 
     @Return: Um valor inteiro que representa a quantidade de dias do mês
@@ -276,177 +399,13 @@ int verif_calendario(int mes, int ano){
     }
 }
 /*
-    @Param: Dois ponteiros para estruturas "Tempo", a primeira sendo a data de início de uma tarefa, e a outra a duração
+    @Param: Dois ponteiros de tarefas
 
-    @Return: Uma estrutura "Tempo", sendo a data final, somando data inicial + duração.
+    @Return: Inteiros 1 ou 0, representando true e false
 
-    Função para retornar a data de conclusão de uma tarefa baseada em sua data inicial e duração. Serve para o encadeamento da lista de tarefas
-    recomendadas da opção 5 do menu, para que nenhuma tarefa sobreponha a data de início da outra desta lista.
+    Compara as deadlines
 */
-tmp * data_final (tmp *deadline, tmp *duracao){
-    tmp * tmpfinal;
-    int d, m, a, h, min, dias_do_mes;
-
-    tmpfinal = (tmp *)malloc(sizeof(tmp));
-
-    min = ((deadline->minuto) % 60);
-    h = ((deadline->hora) % 24) + ((deadline->minuto) / 60);
-
-    d = deadline->dia + ((deadline->hora) / 24);
-    m = deadline->mes;
-    a = deadline->ano;
-
-    dias_do_mes = verif_calendario(m, a);
-
-    do{
-        if(d > dias_do_mes){
-            d = d - dias_do_mes;
-            m++;
-
-            if(m > 12){
-                m = m - 12;
-                a++;
-            }
-
-            dias_do_mes = verif_calendario(m, a);
-        }
-
-    } while (d > dias_do_mes);
-
-    min += duracao->minuto;
-
-    do{
-        if(min >= 60){
-            min = min - 60;
-            h++;
-        }
-
-    } while (min >= 60);
-    
-    h += duracao->hora;
-
-    do{
-        if(h >= 24){
-            h = h - 24;
-            d++;
-        }
-    } while (h >= 24);
-
-    d += duracao->dia;
-
-    do{
-        if(d > dias_do_mes){
-            d = d - dias_do_mes;
-            m++;
-
-            if(m > 12){
-                m = m - 12;
-                a++;
-            }
-
-            dias_do_mes = verif_calendario(m, a);
-        }
-    } while (d > dias_do_mes);
-
-    m += duracao->mes;
-
-    do{
-        if(m > 12){
-            m = m - 12;
-            a++;
-
-        }
-    } while (m > 12);
-
-    a += duracao->ano;
-
-    tmpfinal->minuto = min;
-    tmpfinal->hora = h;
-    tmpfinal->dia = d;
-    tmpfinal->mes = m;
-    tmpfinal->ano = a;
-    
-    return tmpfinal;
-}
-
-task * mg_sort_tasks(task *l){
-    task *e, *d, *mid;
-
-    if(l == NULL || l->prox == NULL){
-        return l;
-    }
-
-    mid = split(l);
-    e = mg_sort_tasks(l);
-    d = mg_sort_tasks(mid);
-    l = merge(e,d);
-
-    return l;
-}
-
-task * split(task *l){
-    task *x, *y, *p, *t;
-
-    x=y=l;
-
-    if(l == NULL || l->prox == NULL) return l;
-    
-    while(y->prox != NULL){
-        y = y->prox;
-
-        if(y->prox != NULL){
-            x = x->prox;
-            y = y->prox;
-        }
-    }
-
-    p = x->prox;
-    x->prox = NULL;
-
-    return (p);
-}
-
-task * merge(task *e, task *d){
-    task *l, *aux;
-    l = NULL;
-
-    while((e != NULL) && (d != NULL)){
-
-        if(data_anterior_a(e, d) == 1){ //(e->dado) < (d->dado)
-            aux = e;
-            e = e->prox;
-            aux->prox = NULL;
-            l = adiciona_final(l, aux);
-        }else{
-            aux = d;
-            d = d->prox;
-            aux->prox = NULL;
-            l = adiciona_final(l, aux);
-        }
-    }
-
-        while(d != NULL){
-            aux = d;
-            d = d->prox;
-            aux->prox = NULL;
-            l = adiciona_final(l, aux);
-        }
-
-        while(e != NULL){
-            aux = e;
-            e = e->prox;
-            aux->prox = NULL;
-            l = adiciona_final(l, aux);
-        }
-
-        return l;
-}
-
-int data_anterior_a(task *e, task *d){
-    tmp *esq, *dir;
-
-    esq = e->dados->deadline;
-    dir = d->dados->deadline;
+int data_anterior_a(tmp *esq, tmp *dir){
 
     if(esq->ano < dir->ano){
         return 1;
@@ -486,15 +445,222 @@ int data_anterior_a(task *e, task *d){
         return 0;
     }
 
-    //Mesmo minuto
-
-    if(e->dados->prioridade > d->dados->prioridade){
-        return 1;
-    }else if(e->dados->prioridade < d->dados->prioridade){
-        return 0;
-    }
-
-    //Mesma prioridade, então tanto faz...
+    //Mesmo minuto, deadline exatamente igual, então retornamos verdadeiro
 
     return 1;
+}
+/*
+    @Param: Dois ponteiros para estruturas "Tempo", a primeira sendo a data de início de uma tarefa, e a outra a duração
+
+    @Return: Uma estrutura "Tempo", sendo a data final, somando data inicial + duração.
+
+    Função para retornar a data de conclusão de uma tarefa baseada em sua data inicial e duração. Serve para o encadeamento da lista de tarefas
+    recomendadas da opção 5 do menu, para que nenhuma tarefa sobreponha a data de início da outra desta lista.
+*/
+tmp * data_final (tmp *deadline, tmp *duracao){
+    tmp * tmpfinal;
+    int d, m, a, h, min, qtde_dias_mes;
+
+    tmpfinal = (tmp *)malloc(sizeof(tmp));
+
+    min = (deadline->minuto + duracao->minuto) % 60;
+    h = ((deadline->hora + duracao->hora) % 24) + ((deadline->minuto + duracao->minuto) / 60);
+    d = (deadline->dia + duracao->dia)+((deadline->minuto + duracao->minuto) / 60);
+    m = deadline->mes + duracao->mes;
+    a = deadline->ano + duracao->ano;
+
+    do{ 
+        if(m > 12){
+            m = m - 12;
+            a++;   
+        }
+    } while (m > 12);
+
+    do{
+        if(min >= 60){
+            min = min - 60;
+            h++;
+        }
+
+    } while (min >= 60);
+
+    do{
+        if(h >= 24){
+            h = h - 24;
+            d++;
+        }
+    } while (h >= 24);
+
+    qtde_dias_mes = verif_calendario(m, a);
+
+    do{
+        if(d > qtde_dias_mes){
+            d = d - qtde_dias_mes;
+            m++;
+        }
+
+        if(m > 12){
+            m = m - 12;
+            a++;
+        }
+
+        qtde_dias_mes = verif_calendario(m, a);
+
+    } while (d > qtde_dias_mes);
+
+    tmpfinal->minuto = min;
+    tmpfinal->hora = h;
+    tmpfinal->dia = d;
+    tmpfinal->mes = m;
+    tmpfinal->ano = a;
+
+    return tmpfinal;
+}
+/*
+    @Params: Um ponteiro apontando para uma lista de tarefas, e uma outra lista com a task mais prioritária adicionada (começando em null em main.c)
+
+    @Return: Uma lista de tarefas com as tarefas prioritárias
+
+    No momento, verifica a de maior prioridade com mais tasks disponiveis a se encaixar, e adiciona esta na lista opt, removendo as que conflitam com ela,
+    e fazendo mais uma chamada desta com as restantes. Se a lista for vazia, irá retornar a lista opt
+*/
+task * filter_optm(task *l, task *opt){
+    task *p, *otima_atual;
+    int peso, max_peso = 0;
+    p = l; 
+
+    if(l == NULL){
+        return opt;
+    }else{
+        while(p != NULL){
+            peso = p->dados->prioridade;
+
+            if(peso + num_de_ant_DF(l, p) > max_peso){
+                otima_atual = p;
+                max_peso = peso + num_de_ant_DF(l, p);
+            }
+            
+            p = p->prox;
+        }
+
+        printf("\nOtima de ID: %d", otima_atual->ID);
+        l = rmv_overlapping(l, otima_atual);
+        opt = adiciona_Tarefa(opt, otima_atual);
+        l = excluir_Tarefa(l, otima_atual->ID);
+
+        filter_optm(l, opt);
+    }
+}
+/*
+    @Param: Um ponteiro para uma lista de tarefas, e um ponteiro para uma task
+
+    @Return: A mesma lista, sem nenhuma task que tenha conflito de horário com a que foi passada como parâmetro
+
+    Função que serve para remover as tarefas da lista que são conflitantes com a task passada como parâmetro
+*/
+task * rmv_overlapping(task* l, task *t){
+    task *p;
+    tmp *data_inicio_t = t->dados->deadline, 
+        *data_final_t = data_final(t->dados->deadline, t->dados->duracao),
+        *data_inicio_p,
+        *data_final_p;
+
+    p = l;
+
+    while (p != NULL){
+
+        if(p->ID != t->ID){
+            data_inicio_p = p->dados->deadline;
+            data_final_p = data_final(p->dados->deadline, p->dados->duracao);
+
+            if(!(data_anterior_a(data_inicio_p, data_inicio_t) && data_anterior_a(data_final_p, data_inicio_t) ||
+                data_anterior_a(data_final_t, data_inicio_p))){
+                l = excluir_Tarefa(l, p->ID);
+            }
+        }
+
+        p = p->prox;
+    }
+
+    return l;
+}
+/*
+    @Param: Um ponteiro para uma lista de tarefas, e um ponteiro para uma task
+
+    @Return: O número de tasks anteriores a passada como parâmetro que não conflitam com o horário
+
+    Retorna o número de tasks na lista anteriores a passada como parâmetro, e que não conflitem com o horário desta 
+*/
+int num_de_ant_DF(task *l, task *t){
+    task *p;
+    tmp *data_inicio_t = t->dados->deadline, *data_final_p;
+    int cont = 0;
+
+    p = l;
+
+    while (p != NULL && (p->ID != t->ID)){
+        data_final_p = data_final(p->dados->deadline, p->dados->duracao);
+        if(data_anterior_a(data_final_p, data_inicio_t)){
+            cont++;
+        }
+        
+
+        p = p->prox;
+    }
+
+    return cont;
+}
+
+task * mg_sort_tasks_DF(task *l){
+    task *e, *d, *mid;
+
+    if(l == NULL || l->prox == NULL){
+        return l;
+    }
+
+    mid = split(l);
+    e = mg_sort_tasks(l);
+    d = mg_sort_tasks(mid);
+    l = merge_DF(e,d);
+
+    return l;
+}
+
+task * merge_DF(task *e, task *d){
+    task *l, *aux;
+    tmp *esq, *dir;
+    l = NULL;
+
+    while((e != NULL) && (d != NULL)){
+        esq = data_final(e->dados->deadline, e->dados->duracao);
+        dir = data_final(d->dados->deadline, d->dados->duracao);
+
+        if(data_anterior_a(esq, dir) == 1){ //(e->dado) < (d->dado)
+            aux = e;
+            e = e->prox;
+            aux->prox = NULL;
+            l = adiciona_Tarefa(l, aux);
+        }else{
+            aux = d;
+            d = d->prox;
+            aux->prox = NULL;
+            l = adiciona_Tarefa(l, aux);
+        }
+    }
+
+        while(d != NULL){
+            aux = d;
+            d = d->prox;
+            aux->prox = NULL;
+            l = adiciona_Tarefa(l, aux);
+        }
+
+        while(e != NULL){
+            aux = e;
+            e = e->prox;
+            aux->prox = NULL;
+            l = adiciona_Tarefa(l, aux);
+        }
+
+        return l;
 }
