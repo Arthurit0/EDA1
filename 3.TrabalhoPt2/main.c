@@ -721,7 +721,7 @@ void mostra_Menu(){
 void tarefas_do_Momento_Main(task *l){
     task * subst;
 
-    subst = clear_compl_tasks(l);
+    subst = clear_compl_pass_tasks(l);
 
     if(subst == NULL){
         printf("-> Nao ha tarefas para fazer :B\n\n");

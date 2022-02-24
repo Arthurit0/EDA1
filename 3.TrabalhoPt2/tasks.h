@@ -49,10 +49,11 @@ task * split(task *l);
 task * merge(task *e, task *d);
 int data_anterior_a(tmp *a, tmp *d);
 
-// Tarefas do momento
+//Tarefas Completas
 task * compl_task(task *t);
-task * clear_compl_tasks(task *l);
+task * clear_compl_pass_tasks(task *l);
 
+// Tarefas do momento
 task * mg_sort_tasks_DF(task *l);
 task * merge_DF(task *e, task *d);
 

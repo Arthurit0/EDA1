@@ -231,31 +231,50 @@ task * compl_task(task *t){
 
     Serve para retornar uma lista em que não haja tarefas já concluidas
 */
-task * clear_compl_tasks(task *l){
+task * clear_compl_pass_tasks(task *l){
+    time_t t;
+    struct tm atual;
+    int dia_hoje, mes_hoje, ano_hoje, hora_hoje, minuto_hoje;
+
     task *p, *subst;
-    reg *dados;
+    reg *dados_p;
+    tmp *deadline_p, *duracao_p, *tempo_agora;
 
     p = l;
 
     while(p != NULL){
 
         if(p->done != 1){
+            deadline_p = cria_Tempo(
+                            p->dados->deadline->dia,
+                            p->dados->deadline->mes, 
+                            p->dados->deadline->ano, 
+                            p->dados->deadline->hora, 
+                            p->dados->deadline->minuto);
+            
+            t = time(NULL);
+            atual = *localtime(&t);
+            dia_hoje = atual.tm_mday;
+            mes_hoje = atual.tm_mon + 1;
+            ano_hoje = atual.tm_year + 1900;
+            hora_hoje = atual.tm_hour;
+            minuto_hoje = atual.tm_min;
 
-            dados = cria_Dados(p->dados->nome, p->dados->prioridade, 
-                cria_Tempo(p->dados->deadline->dia,
-                        p->dados->deadline->mes, 
-                        p->dados->deadline->ano, 
-                        p->dados->deadline->hora, 
-                        p->dados->deadline->minuto),
+            tempo_agora = cria_Tempo(dia_hoje, mes_hoje, ano_hoje, hora_hoje, minuto_hoje);
 
-                cria_Tempo(p->dados->duracao->dia, 
-                        p->dados->duracao->mes, 
-                        p->dados->duracao->ano, 
-                        p->dados->duracao->hora, 
-                        p->dados->duracao->minuto)
-            );
+            if(data_anterior_a(tempo_agora, deadline_p)){
+                duracao_p = cria_Tempo(
+                                p->dados->duracao->dia, 
+                                p->dados->duracao->mes, 
+                                p->dados->duracao->ano, 
+                                p->dados->duracao->hora, 
+                                p->dados->duracao->minuto);
+                
 
-            subst = adiciona_nova_Tarefa(subst, dados, p->ID);
+                dados_p = cria_Dados(p->dados->nome, p->dados->prioridade, deadline_p, duracao_p);
+
+                subst = adiciona_nova_Tarefa(subst, dados_p, p->ID);
+            }
         }
 
         p = p->prox;
@@ -543,7 +562,6 @@ task * filter_optm(task *l, task *opt){
             p = p->prox;
         }
 
-        printf("\nOtima de ID: %d", otima_atual->ID);
         l = rmv_overlapping(l, otima_atual);
         opt = adiciona_Tarefa(opt, otima_atual);
         l = excluir_Tarefa(l, otima_atual->ID);
