@@ -1,2 +1,2 @@
 # EDA1
-Tarefas, listas e trabalhos de EDA serão colocados aqui.
+Tarefas, listas e trabalhos de EDA serão armazenados aqui.
